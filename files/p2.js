@@ -208,33 +208,6 @@ function slaveXY() {
 	
 }
 
-function handleImageSlave(event) {
-  var image = event.target;
-  var bitmap;
-  
-  bitmap = new createjs.Bitmap(image);
-  cont_slave.addChild(bitmap);
-  bitmap.x = temp_slave[slave_i][slave_j] + cardX[HowManyCard-1];
-  bitmap.y = temp_slave[slave_i][slave_j] + cardY[HowManyCard-1];
-    
-  bitmap.regX = bitmap.image.width/2|0;
-  bitmap.regY = bitmap.image.height/2|0;
-  
-  update = true;
-  
-  (function(target) {
-    bitmap.onPress = function(evt) {
-      // bump the target in front of it's siblings:
-      cont_slave.addChild(target);
-      var offset = {x:target.x-evt.stageX, y:target.y-evt.stageY};
-      
-      update = true;
-      stage.update();
-    }
-  })(bitmap);
-    
-	createjs.Ticker.addEventListener("tick", tick);
-}
 	//judge();
 
 	//*判斷可放的位置
