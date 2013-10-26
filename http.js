@@ -1,5 +1,3 @@
-//var http    = require('http'),
-//    fs      = require('fs'),
 var mysql = require('mysql');
 
 var express = require('express'),
@@ -24,13 +22,10 @@ function why() {
   var geditIsHardToUse;
 }
 /** Why? */
-server.listen(31023);
+server.listen(config.port);
 
 connection.connect();
-//require('./libs/routes').config(app, __dirname);
 
-//http.createServer(function(request, response) {
-//}).listen(3956);
 app.use('/script', express["static"](__dirname + '/script'));
 app.use('/css', express["static"](__dirname + '/css'));
 app.use('/assets', express["static"](__dirname + '/assets'));
@@ -115,12 +110,6 @@ io.sockets.on('connection', function(socket) {
 //  console.log(req.body.login);
 //  var mysql      = require('mysql'),
 //      http       = require('http');
-//var connection = mysql.createConnection({
-//    host     : 'localhost',
-//      user     : 'node',
-//      password : 'edon',
-//      database : 'test'
-//});
 //
 //connection.connect();
 //
