@@ -22,6 +22,19 @@ function handleImageLoad(event) {
           bitmap.name = "bmp_"+wtf;
           wtf++;
         
+        if(wtf==2){	//新增起始卡into cont_2
+      		var ccc = cont.getChildAt(0);
+		  	xxx = ccc.x; yyy = ccc.y;
+		  	cont_2.addChild(ccc);
+		  	var ccc_2 = cont_2.getChildAt(0);//con_2裡放的是已確定的卡片
+		  	ccc_2.src = "assets/11c.png"
+		  	ccc_2.x = xxx; ccc_2.y = yyy;
+		  	HowManyCard = wtf-1; //場上卡片數量
+		  	cardX[wtf-2] = xxx; cardY[wtf-2] = yyy; //儲存卡片位置
+		  	cont.removeChildAt(0);
+		  	
+      	}
+      	
         createjs.Ticker.addEventListener("tick", tick);
       }
       
