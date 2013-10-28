@@ -4,6 +4,12 @@
   "scripts": {
     "start": "node http.js"
   },
+  "dependencies" : {
+    "mysql"     : ">=2.0",
+    "express"   : ">=3.3",
+    "socket.io" : ">=0.9",
+    "moment"    : ">=2.2"
+  }
   "repository": {
     "type" : "git",
     "url"  : "git@github.com:adnil/star-island"
