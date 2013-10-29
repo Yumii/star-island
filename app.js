@@ -31,9 +31,14 @@ app.use('/css', express["static"](__dirname + '/css'));
 app.use('/assets', express["static"](__dirname + '/assets'));
 app.use('/files', express["static"](__dirname + '/files'));
 app.use(express.bodyParser());
+app.engine('jshtml', require('jshtml-express'));
+app.set('view engine', 'jshtml');
 
 app.get('/', function(req, res){
-  res.sendfile('index.html');
+  res.locals({
+    title : 'title',
+  });
+  res.render('index');//sendfile('index.html');
 });
 
 app.get('/drag', function(req, res){
