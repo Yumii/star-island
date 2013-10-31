@@ -146,7 +146,7 @@ function frame_rotate(event){	//旋轉
 
   bitmap_UI.onClick = function(){
 	  cont_3.removeAllChildren();
-	  var cont_r = stage.getChildAt(3);ss=wtf-1;
+	  var cont_r = stage.getChildAt(5);ss=wtf-1;
   	var bmp_r = cont_r.getChildByName("bmp_"+ss);
   	bmp_r.rotation=degree; //旋轉
   	//alert(degree);
@@ -188,8 +188,9 @@ function zoomIn(event){	//地圖放大
   bitmap_UI.onClick = function(){
   	zoomNo++;
   	if(zoomNo<=4){
-	    cont_3.scaleX = cont_3.scaleY = cont_3.scale = 1.2;
-	    cont_2.scaleX = cont_2.scaleY = cont_2.scale = 1.2;
+	    cont_3.scaleX = cont_3.scaleY = cont_3.scale = zoom[zoomNo];
+	    cont_2.scaleX = cont_2.scaleY = cont_2.scale = zoom[zoomNo];
+	    cont_temp_slave.scaleX = cont_temp_slave.scaleY = cont_temp_slave.scale = zoom[zoomNo];
   	}
   	else{
   		zoomNo--;
@@ -210,8 +211,9 @@ function zoomOut(event){	//地圖縮小
   bitmap_UI.onClick = function(){   
   	zoomNo--;
   	if(zoomNo>=0){
-	    cont_3.scaleX = cont_3.scaleY = cont_3.scale = 0.6;
-    	cont_2.scaleX = cont_2.scaleY = cont_2.scale = 0.6;
+	    cont_3.scaleX = cont_3.scaleY = cont_3.scale = zoom[zoomNo];
+    	cont_2.scaleX = cont_2.scaleY = cont_2.scale = zoom[zoomNo];
+    	cont_temp_slave.scaleX = cont_temp_slave.scaleY = cont_temp_slave.scale = zoom[zoomNo];
     }
   	else{
   		zoomNo++;
@@ -292,7 +294,7 @@ function check(event){
 	  xxx = ccc.x; yyy = ccc.y;
 	  ccc.name = "bmp_" + (HowManyCard+1);
 	
-    socket.emit('OK', [ttt, degree-90, (yyy/150)-2+72, (xxx/150)-3+72, slave_color]);
+    //socket.emit('OK', [ttt, degree-90, (yyy/150)-2+72, (xxx/150)-3+72, slave_color]);
     //console.log(slave_color + "  UI");
 	  HowManyCard = wtf-1; //場上卡片數量
 	  cardX[wtf-2] = xxx; cardY[wtf-2] = yyy; //儲存卡片位置

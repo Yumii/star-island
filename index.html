@@ -13,9 +13,9 @@
       var playerid = prompt('What is your id?');
       var slave_color, slave_image, arr;
 
-      var wtf = 1, wtf_click=0, ttt, cou=1;      
+      var wtf = 1, wtf_click=0, wtf_slave = 1, ttt, cou=1;      
 
-      var canvas, stage, cont, cont_2, cont_3, cont_UI,degree, ttt;//"ttt"為該回合所抽取的卡片種類
+      var canvas, stage, cont, cont_2, cont_3, cont_UI, cont_temp_slave, degree, ttt;//"ttt"為該回合所抽取的卡片種類
       var mouseTarget;	// the display object currently under the mouse, or being dragged
       var dragStarted;	// indicates whether we are currently in a drag operation
       var offset;
@@ -45,13 +45,15 @@
         cont_2 = new createjs.Container();
         cont_3 = new createjs.Container();
         cont_UI = new createjs.Container();
-        cont_slave = new createjs.Container(); //放放slavee的產生位置(每回合都會變)
+       cont_temp_slave = new createjs.Container(); //放slave的產生位置(每回合都會變) , 所以每次確定後會刪除此此containerr內的物件
+        cont_slave = new createjs.Container(); //放每個人確定後的slave物件
         
         stage.addChild(cont_3);
         stage.addChild(cont_2);
+        stage.addChild(cont_temp_slave);
+        stage.addChild(cont_slave);
         stage.addChild(cont_UI);
         stage.addChild(cont);
-        stage.addChild(cont_slave);
         
         cont_2.onPress = function(evt) {
 				  var offset = {x:evt.target.x-evt.stageX, y:evt.target.y-evt.stageY};
@@ -61,7 +63,7 @@
 					  ev.target.y = ev.stageY+offset.y;
 					
 					  cont_3.x = ev.target.x; cont_3.y = ev.target.y;
-					cont_slave.x = ev.target.x; cont_slave.y = ev.target.y;
+					  cont_temp_slave.x = ev.target.x; cont_temp_slave.y = ev.target.y;
 				  }
 				
 			  }
@@ -200,8 +202,12 @@
 		    direction %= 4 ; // 旋轉次數 mod 4
 			n += (24*direction);
 		    mapInfo[(yyy/150)-2+72][(xxx/150)-3+72]=n;
-		    console.log(n);
+		    //console.log(n);
+		    
         }
+        	
+        }
+        else {
         	
         }
         

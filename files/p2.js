@@ -177,34 +177,35 @@ slaveInfo[22] = [3, 7, 9];
 slaveInfo[23] = [2, 4, 5, 6, 7, 8];
 slaveInfo[24] = [1, 2, 3, 4, 5, 6, 7, 8];
 
-slavePos = [ [-30, -30], [0, -30], [-30, 30], [0, 30], [30, 30], [30, 0], [30, -30], [0, -30], [0, 0] ];
+var slavePos = [ [-45, -45], [0, -60], [55, -35], [60, 0], [45, 45], [0, 60], [-45, 45], [-60, 0], [0, 0] ];
 	
-var temp_slave = new Array();
-var slave_i, slave_j;
-function slaveXY() {		
-	for(i=0; i<HowManyCard; i++){
-		rotateNo = (CardsDegree[i]/90); //轉幾次
-		
-		for(j=0; j < slaveInfo[TypeOfCard[i]].length; j++){
-			if(slaveInfo[i][j] != 9){
-				temp_slave[i][j] = (slaveInfo[TypeOfCard[i]][j] + (rotateNo * 2)) % 8;
+var temp_slave;
+var slave_j;
+function slaveXY() {
+	temp_slave = new Array();
+		rotateNo = (CardsDegree[HowManyCard-1]/90); //轉幾次
+		var type = TypeOfCard[HowManyCard-1];
+		for(j=0; j < slaveInfo[type].length; j++){
+			if(slaveInfo[type][j] != 9){
+				temp_slave[j] = (slaveInfo[type][j] + (rotateNo * 2)) % 8;
+				if(temp_slave[j] == 0) {
+					temp_slave[j] = 8;
+				}
 			}
 			else{
-				temp_slave[i][j] = 9;
+				temp_slave[j] = 9;
 			}
 		}
-	}
-	
-	for(slave_i=0; slave_i<HowManyCard; slave_i++){
-		for(slave_j=0; slave_j< temp_slave[slave_i].length; slave_j++){
+		
+		for(slave_j=0; slave_j< temp_slave.length; slave_j++){
+			
 			var image = new Image();
-			image.src = "assets/" + redPoint + ".png";
+			image.src = "assets/redPoint2.png";
 			image.onload = handleImageSlave;
 			
 			update = true;
 		}
-		
-	}
+	slave_j = temp_slave.length ;
 	
 }
 
