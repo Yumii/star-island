@@ -292,7 +292,8 @@ function check(event){
 	  xxx = ccc.x; yyy = ccc.y;
 	  ccc.name = "bmp_" + (HowManyCard+1);
 	
-    socket.emit('OK', [ttt, degree-90, (yyy/150)-2+72, (xxx/150)-3+72]);
+    socket.emit('OK', [ttt, degree-90, (yyy/150)-2+72, (xxx/150)-3+72, slave_color]);
+    //console.log(slave_color + "  UI");
 	  HowManyCard = wtf-1; //場上卡片數量
 	  cardX[wtf-2] = xxx; cardY[wtf-2] = yyy; //儲存卡片位置
 	

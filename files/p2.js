@@ -334,11 +334,11 @@ function judgeOK(nup, nri, ndw, nle, ny, nx) {
 //		document.write("<br>cardInfo[" +ny+ "][" +nx+ "] OK!!! _9_nOK ");
 	}
 	else {
-		console.log(cardInfo[nup][2]+nup+" == "+cardInfo[n][0] + "  /  "+
+		/*console.log(cardInfo[nup][2]+nup+" == "+cardInfo[n][0] + "  /  "+
 		cardInfo[nri][3] +nri+" == "+cardInfo[n][1] + "  /  "+
 		cardInfo[ndw][0] +ndw+" == "+ cardInfo[n][2] + "  /  "+
 		cardInfo[nle][1] +nle+"=="+ cardInfo[n][3]+"  ;  ");
-		console.log("[ "+ny+" ] [ "+nx+" ]");
+		console.log("[ "+ny+" ] [ "+nx+" ]");*/
 		//alert("NO");
 //		document.write("<br>countOK = " +countOK+ " NO!!! _9_nNO ");
 	}

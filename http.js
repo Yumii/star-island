@@ -11,10 +11,10 @@ var express = require('express'),
 var config = require('./config');
 
 var connection = mysql.createConnection({
-    host     : connectionHost,
-    user     : connectionUser,
-    password : connectionPassword,
-    database : connectionDatabase
+    host     : config.connectionHost,
+    user     : config.connectionUser,
+    password : config.connectionPassword,
+    database : config.connectionDatabase
 });
 /**
  * Server run at port 31023

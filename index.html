@@ -162,37 +162,49 @@
       });
       socket.on('show', function(arr) {
         console.log(arr);
-        var image = new Image();
-        ttt = arr[0];
-        xxx = (arr[3]-69)*150;
-        yyy = (arr[2]-70)*150;
-        image.src = "assets/" + ttt + "c.png"
-        image.onload = function(event) {
-          var image = event.target;
-          var bitmap;
-          bitmap = new createjs.Bitmap(image);
-          cont_2.addChild(bitmap);
-          bitmap.regX = bitmap.image.width/2|0;
-          bitmap.regY = bitmap.image.height/2|0;
-          bitmap.scaleX = bitmap.scaleY = bitmap.scale = 0.5;
-          bitmap.name = "bmp_"+wtf;
-          bitmap.x = (arr[3]-69)*150;
-          bitmap.y = (arr[2]-70)*150;
-          wtf++;
+        
+        if(slave_color != arr[4]) {
+		    var image = new Image();
+		    ttt = arr[0];
+		    xxx = (arr[3]-69)*150;
+		    yyy = (arr[2]-70)*150;
+		    image.src = "assets/" + ttt + "c.png"
+		    image.onload = function(event) {
+		      var image = event.target;
+		      var bitmap;
+		      bitmap = new createjs.Bitmap(image);
+		      cont_2.addChild(bitmap);
+		      bitmap.regX = bitmap.image.width/2|0;
+		      bitmap.regY = bitmap.image.height/2|0;
+		      bitmap.scaleX = bitmap.scaleY = bitmap.scale = 0.5;
+		      bitmap.name = "bmp_"+wtf;
+		      bitmap.x = (arr[3]-69)*150;
+		      bitmap.y = (arr[2]-70)*150;
+		      wtf++;
+		      degree=arr[1] ;
+		      bitmap.rotation=degree;
+		    RedNumber = -1;
+		    HowManyCard ++;
+		    /*var bitmap = cont_2.getChildByName("bmp_"+(wtf));
+		    bitmap.y = yyy;
+		    bitmap.x = xxx;*/
+		    cardX[HowManyCard-1] = xxx; 
+		    cardY[HowManyCard-1] = yyy;
+		    RedNumber=0;wtf_click=0;
+		    cou++;
+		    CardsDegree[HowManyCard-1] = degree;
+		    direction =  (degree)/90;
+		    console.log(degree-90 + "  DDDD");
+		    TypeOfCard[HowManyCard-1] = ttt;
+		    n=ttt;
+		    direction %= 4 ; // 旋轉次數 mod 4
+			n += (24*direction);
+		    mapInfo[(yyy/150)-2+72][(xxx/150)-3+72]=n;
+		    console.log(n);
         }
-        degree=arr[1] + 90;
-        RedNumber = -1;
-        HowManyCard = wtf-1;
-        var bitmap = cont_2.getChildByName("bmp_"+(wtf-1));
-        bitmap.y = yyy;
-        bitmap.x = xxx;
-        cardX[wtf-2] = xxx; 
-        cardY[wtf-2] = yyy;
-        RedNumber=0;wtf_click=0;
-        cou++;
-        CardsDegree[HowManyCard-1] = degree-90;
-        TypeOfCard[HowManyCard-1] = ttt;
-        mapInfo[(yyy/150)-2+72][(xxx/150)-3+72]=n;
+        	
+        }
+        
         update = true;
       });
     </script>
