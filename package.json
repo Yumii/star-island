@@ -5,11 +5,12 @@
     "start": "node http.js"
   },
   "dependencies" : {
-    "mysql"     : ">=2.0",
-    "express"   : ">=3.3",
-    "socket.io" : ">=0.9",
-    "moment"    : ">=2.2"
-  }
+    "mysql"           : "2.0.0-alpha9",
+    "express"         : "3.3.8",
+    "socket.io"       : "0.9.16",
+    "moment"          : "2.2.1",
+    "jshtml-express"  : "0.0.1"
+  },
   "repository": {
     "type" : "git",
     "url"  : "git@github.com:adnil/star-island"
