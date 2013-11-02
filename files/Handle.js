@@ -3,7 +3,7 @@ function handleImageLoad(event) {
 	var bitmap;
 
   bitmap = new createjs.Bitmap(image);
-	  
+	TypeOfCard[HowManyCard]=ttt;
 	if(wtf==1){ //第一張卡片位置
 	  cont_2.addChild(bitmap);
 	  bitmap.x = 450;

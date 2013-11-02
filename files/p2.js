@@ -183,8 +183,8 @@ var temp_slave;
 var slave_j;
 function slaveXY() {
 	temp_slave = new Array();
-		rotateNo = (CardsDegree[HowManyCard-1]/90); //轉幾次
-		var type = TypeOfCard[HowManyCard-1];
+		rotateNo = (CardsDegree[HowManyCard]/90); //轉幾次
+		var type = TypeOfCard[HowManyCard];
 		for(j=0; j < slaveInfo[type].length; j++){
 			if(slaveInfo[type][j] != 9){
 				temp_slave[j] = (slaveInfo[type][j] + (rotateNo * 2)) % 8;

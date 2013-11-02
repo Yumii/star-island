@@ -160,7 +160,7 @@ function frame_rotate(event){	//旋轉
       bmp_rr.rotation=degree;
       //alert(degree);
       degree+=90;
-
+      CardsDegree[HowManyCard] = degree-90;
       cont_temp_slave.removeAllChildren();
 
       update = true;
@@ -203,6 +203,7 @@ function zoomIn(event){	//地圖放大
 	    cont_3.scaleX = cont_3.scaleY = cont_3.scale = zoom[zoomNo];
 	    cont_2.scaleX = cont_2.scaleY = cont_2.scale = zoom[zoomNo];
 	    cont_temp_slave.scaleX = cont_temp_slave.scaleY = cont_temp_slave.scale = zoom[zoomNo];
+	    cont_slave.scaleX = cont_slave.scaleY = cont_slave.scale = zoom[zoomNo];
   	}
   	else{
   		zoomNo--;
@@ -226,6 +227,7 @@ function zoomOut(event){	//地圖縮小
 	    cont_3.scaleX = cont_3.scaleY = cont_3.scale = zoom[zoomNo];
     	cont_2.scaleX = cont_2.scaleY = cont_2.scale = zoom[zoomNo];
     	cont_temp_slave.scaleX = cont_temp_slave.scaleY = cont_temp_slave.scale = zoom[zoomNo];
+    	cont_slave.scaleX = cont_slave.scaleY = cont_slave.scale = zoom[zoomNo];
     }
   	else{
   		zoomNo++;
