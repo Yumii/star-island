@@ -1,22 +1,5 @@
 <html>
   <head>
-    <script src="script/jquery.js"></script>
-    <script src="/socket.io/socket.io.js"></script>
-    <script>
-      var socket = io.connect('http://140.136.150.87');
-
-      socket.on('auth', function(data) {
-        console.log(data);
-      });
-      $(document).ready(function() {
-//        var sub = $('#sub');
-//        sub.click(function() {
-//          var id = $('#id').val(),
-//              pwd = $('#pwd').val();
-//          socket.emit('login', {id: id, pwd: pwd});
-//        });
-      });
-    </script>
     <style>
       body {
         background: black;
@@ -29,6 +12,18 @@
         margin-right: auto;
       }
     </style>
+    <script src="script/jquery.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      var socket = io.connect('http://140.136.150.87');
+
+      socket.on('auth', function(data) {
+        console.log(data);
+      });
+      $(document).ready(function() {
+        $('#id').focus();
+      });
+    </script>
   </head>
   <body>
     <div class="content">
