@@ -139,22 +139,32 @@ function frame_rotate(event){	//旋轉
 	var image_UI = event.target;
   var bitmap_UI;
   
-  bitmap_UI = new createjs.Bitmap(image_UI);
-  cont_UI.addChild(bitmap_UI);
-  bitmap_UI.x =776;
-  bitmap_UI.y =350;
+    bitmap_UI = new createjs.Bitmap(image_UI);
+    cont_UI.addChild(bitmap_UI);
+    bitmap_UI.x =776;
+    bitmap_UI.y =350;
 
-  bitmap_UI.onClick = function(){
-	  cont_3.removeAllChildren();
-	  var cont_r = stage.getChildAt(5);ss=wtf-1;
-  	var bmp_r = cont_r.getChildByName("bmp_"+ss);
-  	bmp_r.rotation=degree; //旋轉
-  	//alert(degree);
-  	degree+=90;
+    bitmap_UI.onClick = function(){
+	    if(slaveTF == true) {
+        cont_slave.removeChildAt(cont_slave.children.length - 1);
+        slaveTF = false;
+      }
   
-  	update = true;
-  	judge();
-	
+      cont_3.removeAllChildren();
+      //var cont_r = stage.getChildAt(1);ss=wtf-1;
+      var bmp_r = cont_2.getChildAt(HowManyCard);
+      var bmp_rr = cont.getChildAt(0);
+      bmp_rr.visible = true;
+      bmp_r.visible = false;
+      bmp_r.rotation=degree; //旋轉
+      bmp_rr.rotation=degree;
+      //alert(degree);
+      degree+=90;
+
+      cont_temp_slave.removeAllChildren();
+
+      update = true;
+	    judge();
   }
 }
 function frame_slave(event){	//小人
@@ -168,7 +178,9 @@ function frame_slave(event){	//小人
   bitmap_UI.x =776;
   bitmap_UI.y =250;
   bitmap_UI.onClick = function(){
-    slaveRed();
+    if(cont.getChildAt(0).visible == false) {
+      slaveXY();
+    }
   }
 
   update = true;
@@ -294,34 +306,22 @@ function check(event){
 	  xxx = ccc.x; yyy = ccc.y;
 	  ccc.name = "bmp_" + (HowManyCard+1);
 	
-    //socket.emit('OK', [ttt, degree-90, (yyy/150)-2+72, (xxx/150)-3+72, slave_color]);
+		socket.emit('OK', [ttt, degree-90, (yyy/150)-2+72, (xxx/150)-3+72, slave_color]);
     //console.log(slave_color + "  UI");
 	  HowManyCard = wtf-1; //場上卡片數量
-	  cardX[wtf-2] = xxx; cardY[wtf-2] = yyy; //儲存卡片位置
-	
+	  cont.removeAllChildren();
 	  cont_3.removeAllChildren();
+	    cont_temp_slave.removeAllChildren();
 	  RedNumber=0;wtf_click=0;
 	  cou++;
 	  CardsDegree[HowManyCard-1] = degree-90; //存使用者所旋轉的度數
     TypeOfCard[HowManyCard-1] = ttt;//存使用者所抽到的卡片種類
     mapInfo[(yyy/150)-2+72][(xxx/150)-3+72]=n;
-    //alert(cardInfo[ttt-1][( degree-90)/90]);
     
-  //測試用～看是否資料有存入矩陣
-  /* for(a=0; a<HowManyCard; a++){
-	  alert("["+CardsDegree[a] + " , "+ TypeOfCard[a] + "  x:"+cardX[a] + " y:"+cardY[a]+"]");
-  }*/
-    slaveXY();
-    //createjs.Ticker.addEventListener("tick", tick);
     createjs.Ticker.addListener(stage);
     stage.update();
 	
   }
-
-  /** var bmp_wtf = cont_2.getChildByName("bmp_"+wtf);
-  socket.emit('OK', [ttt, bmp_wtf.x]); */
-
-
   update = true;
 }
 

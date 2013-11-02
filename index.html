@@ -13,7 +13,7 @@
       var playerid = prompt('What is your id?');
       var slave_color, slave_image, arr;
 
-      var wtf = 1, wtf_click=0, wtf_slave = 1, ttt, cou=1;      
+      var wtf = 1, wtf_click=0, wtf_slave = 1, ttt, cou=1, slaveTF=false;      
 
       var canvas, stage, cont, cont_2, cont_3, cont_UI, cont_temp_slave, degree, ttt;//"ttt"為該回合所抽取的卡片種類
       var mouseTarget;	// the display object currently under the mouse, or being dragged
@@ -64,6 +64,8 @@
 					
 					  cont_3.x = ev.target.x; cont_3.y = ev.target.y;
 					  cont_temp_slave.x = ev.target.x; cont_temp_slave.y = ev.target.y;
+					  cont_slave.x = ev.target.x; cont_slave.y = ev.target.y;
+					  update = true;
 				  }
 				
 			  }
@@ -87,20 +89,27 @@
         }
         
       function add() {
-      	
-      	
-      	//cont_3.x = cont_2.x = 100;
-      	//cont_3.y = cont_2.y = 150;
-      
         var image = new Image();
         ttt=Math.ceil(24* Math.random());
         image.src = "assets/" + ttt+ "c.png"
         image.onload = handleImageLoad;
         degree=90;
         
+        image = new Image();
+        image.src = "assets/" + ttt+ "c.png"
+        degree=90;
+        var bitmap = new createjs.Bitmap(image);
+        cont.addChild(bitmap);
+        bitmap.regX = 150;
+		    bitmap.regY = 150;
+		    bitmap.scaleX = bitmap.scaleY = bitmap.scale = 0.5;
+        bitmap.x=850;
+        bitmap.y=550;
+        
         RedNumber=-1;
         
         judge();
+        slaveTF = false;
         update = true;
       }      
       
