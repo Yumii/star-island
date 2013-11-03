@@ -1,7 +1,7 @@
 function handleImageLoad(event) {
 	var image = event.target;
 	var bitmap;
-
+  
   bitmap = new createjs.Bitmap(image);
 	TypeOfCard[HowManyCard]=ttt;
 	if(wtf==1){ //第一張卡片位置
@@ -15,9 +15,11 @@ function handleImageLoad(event) {
 	  TypeOfCard[0]=20;
 	}
 	else{
+	  CardsDegree[HowManyCard] = degree-90;
 	  cont_2.addChild(bitmap);
 	  bitmap.x = 850;
 	  bitmap.y = 550;
+	  bitmap.visible = false;
 	  update = true;
 	}
 
@@ -65,6 +67,9 @@ function handleImageRed(event) {
 	  	if(slaveTF == true) {
 		      cont_slave.removeChildAt(cont_slave.children.length-1);
 		      slaveTF = false;
+		      slave_XY[Mycolor].splice(slave_XY[Mycolor].length-1, 1);
+		      sla_valX = null;
+		      sla_valY = null;
 		    }
       else {
         cont_slave.removeChildAt(cont_slave.children.length);
@@ -103,28 +108,29 @@ function handleImageSlave(event) {
 		  cont_temp_slave.addChild(target);
 		  var offset = {x:target.x-evt.stageX, y:target.y-evt.stageY};
 		  
-		  if(confirm("Are you sure you want to put there ?")) {
 		  	console.log(bitmap.name);
-	      	
+	      	console.log(slave_color + "*****");
 	      	var image_s = new Image();
-	      	image_s.src = "assets/slaveBlue.png";
+	      	image_s.src = "assets/slave"+ slave_color +".png";
 	      	bitmap_s = new createjs.Bitmap(image_s);
 	      	cont_slave.addChild(bitmap_s);
 			
-			bitmap_s.regX = 200;
-			bitmap_s.regY = 200;
-			bitmap_s.x = bitmap.x;
-			bitmap_s.y = bitmap.y;
-			bitmap_s.scaleX = bitmap_s.scaleY = bitmap_s.scale = 0.15;
-			slaveTF = true;
-	  	cont_temp_slave.removeAllChildren();
+			  bitmap_s.regX = 200;
+			  bitmap_s.regY = 200;
+			  bitmap_s.x = sla_valX = bitmap.x;
+			  bitmap_s.y = sla_valY = bitmap.y;
+			  bitmap_s.scaleX = bitmap_s.scaleY = bitmap_s.scale = 0.15;
+			  slaveTF = true;
+	    	cont_temp_slave.removeAllChildren();
+	    	update = true;
+	    	console.log(bitmap.x + " X/oo/Y "+ bitmap.y);
+	    	if(slave_XY[Mycolor] == undefined) {
+	    	  slave_XY[Mycolor]=[];
+	    	}
+	    	//below: 存放slave_color顏色的玩家, 擁有的小人放在 cont_slave 裡的第幾個位置
+	    	slave_XY[Mycolor].splice(cont_slave.children.length-1, 0, bitmap_s); 
+	    	slave_len = cont_slave.children.length;
 			
-			update = true;
-		  }
-		  else {
-	        slaveTF = false;
-	    }
-		  
 		  update = true;
 		  stage.update();
 		}

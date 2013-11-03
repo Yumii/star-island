@@ -186,17 +186,17 @@ function slaveXY() {
 		rotateNo = (CardsDegree[HowManyCard]/90); //轉幾次
 		var type = TypeOfCard[HowManyCard];
 		for(j=0; j < slaveInfo[type].length; j++){
-			if(slaveInfo[type][j] != 9){
-				temp_slave[j] = (slaveInfo[type][j] + (rotateNo * 2)) % 8;
-				if(temp_slave[j] == 0) {
-					temp_slave[j] = 8;
+		  temp = (slaveInfo[type][j] + (rotateNo * 2));
+		  if(temp == 8) {
+				temp_slave[j] = 8;
 				}
+			else if(slaveInfo[type][j] != 9){
+				temp_slave[j] = temp % 8;
 			}
 			else{
 				temp_slave[j] = 9;
 			}
 		}
-		
 		for(slave_j=0; slave_j< temp_slave.length; slave_j++){
 			
 			var image = new Image();
