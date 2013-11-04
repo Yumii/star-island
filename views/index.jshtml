@@ -19,7 +19,7 @@
       //var playerid = @locals.id ;//prompt('What is your id?');
       var slave_color, slave_image, arr;
 
-      var wtf = 1, wtf_click=0, wtf_slave = 1, ttt, cou=1, slaveTF=false;      
+      var wtf = 1, wtf_click=0, wtf_slave = 1, ttt, cou=1, slaveTF=false, slave_XY, Mycolor, sla_valX, sla_valY;      
 
       var canvas, stage, cont, cont_2, cont_3, cont_UI, cont_temp_slave, degree, ttt;//"ttt"為該回合所抽取的卡片種類
       var mouseTarget;	// the display object currently under the mouse, or being dragged
@@ -29,6 +29,7 @@
       var cardY = new Array(72);
       var TypeOfCard = new Array(72); // 紀錄卡片種類
       var CardsDegree = new Array(72); //紀錄卡片旋轉度數
+      var CardNumber = new Array(24); //紀錄每種卡的張數
       
       //var RedRange = new Array(72);  //可擺放之卡片按鈕
       var temp; //別看我,我只是函數間傳值的變數
@@ -82,6 +83,8 @@
           image.onload = handleImageLoad;
           
           LoadUI();
+          slave_XY = new Array(4); //0~3 依序為 blue, gray, green, red, yellow 的小人位置
+          CardNumber = [ 4, 2, 1, 3, 1, 1, 2, 3, 2, 3, 2, 1, 2, 2, 3, 5, 3, 3, 3, 3, 8, 9, 4, 1];
           
           // enable touch interactions if supported on the current device:
           createjs.Touch.enable(stage);
@@ -93,10 +96,18 @@
           
           
         }
-        
+        // 42131 12323 21223 53333 8941
       function add() {
         var image = new Image();
-        ttt=Math.ceil(24* Math.random());
+        temp = true;
+        while(temp) {
+          ttt=Math.ceil(24* Math.random());
+          if(CardNumber[ttt-1]!==0) {
+            CardNumber[ttt-1]--;
+            temp = false;
+          }
+        }
+        
         image.src = "assets/" + ttt+ "c.png"
         image.onload = handleImageLoad;
         degree=90;
@@ -115,37 +126,66 @@
         RedNumber=-1;
         
         judge();
+        sla_valX = null;
+        sla_valY = null;
         slaveTF = false;
         update = true;
       }      
       
       function out() {
-      	wtf--;
-      	wtf_click=0;      	
-      	cont.removeChildAt(0);
-      	cont_2.removeChildAt(HowManyCard);
-      	cont_3.removeAllChildren();
-      	if(wtf==2){
-      	  cont_2.removeChildAt(0);
-      		HowManyCard=0;
-      		wtf=1;
-      		var image = new Image();
-          image.src = "assets/11c.png"
-          image.onload = handleImageLoad;
-        
+        if(cont_temp_slave.children.length==0){
+          wtf--;
+        	wtf_click=0;      	
+        	cont.removeChildAt(0);
+        	cont_2.removeChildAt(HowManyCard);
+        	cont_3.removeAllChildren();
+        	/*if(wtf==2){
+        	  cont_2.removeChildAt(0);
+        		HowManyCard=0;
+        		wtf=1;
+        		var image = new Image();
+            image.src = "assets/11c.png"
+            image.onload = handleImageLoad;
+          
+          }*/
+        	update=true;
+        	stage.update();
         }
-      	update=true;
-      	stage.update();
-      
+        else {
+          console.log("There have some frames that you can put this card.");
+        }
+      	
       }
       
       $(document).ready(function() {
         socket.emit('id', '@locals.id');
         socket.on('turn', function (data) {
-          console.log(data);
+          console.log(data); //data為該回合玩家的顏色
           var add = $("#add");
-          if(data === slave_color) {
+          if(data === slave_color) { //slave_color為每個玩家自己的顏色
             console.log("ur turn");
+            var check = cont_UI.getChildByName("check");
+            check.visible = true;
+            
+            var image = new Image();
+            temp = true;
+            while(temp) {
+              ttt=Math.ceil(24* Math.random());
+              if(CardNumber[ttt-1]!==0) {
+                CardNumber[ttt-1]--;
+                temp = false;
+              }
+            }
+            image.src = "assets/" + ttt+ "c.png"
+            image.onload = handleImageLoad;
+            degree=90;
+            RedNumber=-1;
+            judge();
+            sla_valX = null;
+            sla_valY = null;
+            slaveTF = false;
+            
+            update = true;
             add.show();
           }
           else {
@@ -176,6 +216,25 @@
         slave_image.src = "assets/slave-" + color + ".png";
         console.log(color);
         cont_UI.addChild(cont_UI.getChildByName("slave"));
+        switch(slave_color){
+            case "blue":
+              Mycolor = 0;
+              break;
+            case "gray":
+              Mycolor = 1;
+              break;
+            case "green":
+              Mycolor = 2;
+              break;
+            case "red":
+              Mycolor = 3;
+              break;
+            case "yellow":
+              Mycolor = 4;
+              break;
+            default:
+              break;
+          }
       });
       socket.emit('getMap', 'give my map');
       socket.on('map', function(data) {
@@ -185,46 +244,100 @@
         console.log(arr);
         
         if(slave_color != arr[4]) {
-		    var image = new Image();
-		    ttt = arr[0];
-		    xxx = (arr[3]-69)*150;
-		    yyy = (arr[2]-70)*150;
-		    image.src = "assets/" + ttt + "c.png"
-		    image.onload = function(event) {
-		      var image = event.target;
-		      var bitmap;
-		      bitmap = new createjs.Bitmap(image);
-		      cont_2.addChild(bitmap);
-		      bitmap.regX = bitmap.image.width/2|0;
-		      bitmap.regY = bitmap.image.height/2|0;
-		      bitmap.scaleX = bitmap.scaleY = bitmap.scale = 0.5;
-		      bitmap.name = "bmp_"+wtf;
-		      bitmap.x = (arr[3]-69)*150;
-		      bitmap.y = (arr[2]-70)*150;
-		      wtf++;
-		      degree=arr[1] ;
-		      bitmap.rotation=degree;
-		    RedNumber = -1;
-		    HowManyCard ++;
-		    /*var bitmap = cont_2.getChildByName("bmp_"+(wtf));
-		    bitmap.y = yyy;
-		    bitmap.x = xxx;*/
-		    cardX[HowManyCard-1] = xxx; 
-		    cardY[HowManyCard-1] = yyy;
-		    RedNumber=0;wtf_click=0;
-		    cou++;
-		    CardsDegree[HowManyCard-1] = degree;
-		    direction =  (degree)/90;
-		    console.log(degree-90 + "  DDDD");
-		    TypeOfCard[HowManyCard-1] = ttt;
-		    n=ttt;
-		    direction %= 4 ; // 旋轉次數 mod 4
-			n += (24*direction);
-		    mapInfo[(yyy/150)-2+72][(xxx/150)-3+72]=n;
-		    //console.log(n);
+          CardNumber[arr[0]-1]--;
+		      var image = new Image();
+		      ttt = arr[0];
+		      xxx = (arr[3]-69)*150;
+		      yyy = (arr[2]-70)*150;
+		      image.src = "assets/" + ttt + "c.png"
+		      image.onload = function(event) {
+		        var image = event.target;
+		        var bitmap;
+		        bitmap = new createjs.Bitmap(image);
+		        cont_2.addChild(bitmap);
+		        bitmap.regX = bitmap.image.width/2|0;
+		        bitmap.regY = bitmap.image.height/2|0;
+		        bitmap.scaleX = bitmap.scaleY = bitmap.scale = 0.5;
+		        bitmap.name = "bmp_"+wtf;
+		        bitmap.x = (arr[3]-69)*150;
+		        bitmap.y = (arr[2]-70)*150;
+		        wtf++;
+		        degree=arr[1] ;
+		        bitmap.rotation=degree;
+		        RedNumber = -1;
+		        HowManyCard ++;
+		        /*var bitmap = cont_2.getChildByName("bmp_"+(wtf));
+		        bitmap.y = yyy;
+		        bitmap.x = xxx;*/
+		        cardX[HowManyCard-1] = xxx; 
+		        cardY[HowManyCard-1] = yyy;
+		        RedNumber=0;wtf_click=0;
+		        cou++;
+		        CardsDegree[HowManyCard-1] = degree;
+		        direction =  (degree)/90;
+		        //console.log(degree-90 + "  DDDD");
+		        TypeOfCard[HowManyCard-1] = ttt;
+		        n=ttt;
+		        direction %= 4 ; // 旋轉次數 mod 4
+			      n += (24*direction);
+		        mapInfo[(yyy/150)-2+72][(xxx/150)-3+72]=n;
+		        //console.log(n);
 		    
+          }
+        if(arr[5] != null) {
+          image = new Image();
+          image.src = "assets/slave" + arr[4] + ".png"
+          image.onload = function(event) {
+          var image = event.target;
+          var bitmap;
+            bitmap = new createjs.Bitmap(image);
+            cont_slave.addChild(bitmap);
+            bitmap.x = arr[5];
+            bitmap.y = arr[6];
+          bitmap.regX = bitmap.image.width/2|0;
+          bitmap.regY = bitmap.image.height/2|0;
+          bitmap.scaleX = bitmap.scaleY = bitmap.scale = 0.15;
+          bitmap.name = "slave_" + wtf_slave;
+          wtf_slave++;
+          update = true;
+          
+          switch(arr[4]) {
+            case "blue":
+              temp = 0;
+              break;
+            case "gray":
+              temp = 1;
+              break;
+            case "green":
+              temp = 2;
+              break;
+            case "red":
+              temp = 3;
+              break;
+            case "yellow":
+              temp = 4;
+              break;
+            default:
+              break;
+          }
+          //console.log(temp + "  ********");
+          
+         if(slave_XY[temp] == undefined) {
+      	  slave_XY[temp]=[];
+      	 }
+      	 console.log(bitmap + " // " + slave_XY[temp] + "   bitmap");
+         slave_XY[temp].splice(slave_XY[temp].length, 0, bitmap);
+         //slave_Y[Mycolor].splice = ([slave_XY[Mycolor].length], 0, arr[6]);
+         //console.log(slave_XY[temp] + "another one");
+         console.log(slave_XY[temp].length + " // " + slave_XY[temp] +"    slave_XY[temp].length");
+         }
+         
+         
+         
         }
-        	
+         
+         
+       
         }
         else {
         	

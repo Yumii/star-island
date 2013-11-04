@@ -143,11 +143,15 @@ function frame_rotate(event){	//旋轉
     cont_UI.addChild(bitmap_UI);
     bitmap_UI.x =776;
     bitmap_UI.y =350;
-
+    
+    update = true;
     bitmap_UI.onClick = function(){
 	    if(slaveTF == true) {
         cont_slave.removeChildAt(cont_slave.children.length - 1);
         slaveTF = false;
+        slave_XY[Mycolor].splice(slave_XY[Mycolor].length-1, 1);
+        sla_valX = null;
+        sla_valY = null;
       }
   
       cont_3.removeAllChildren();
@@ -178,7 +182,7 @@ function frame_slave(event){	//小人
   bitmap_UI.x =776;
   bitmap_UI.y =250;
   bitmap_UI.onClick = function(){
-    if(cont.getChildAt(0).visible == false) {
+    if(cont.getChildAt(0).visible == false || cont.getChildAt(0) == undefined) {
       slaveXY();
     }
   }
@@ -307,8 +311,11 @@ function check(event){
 	  var ccc = cont_2.getChildAt(HowManyCard);
 	  xxx = ccc.x; yyy = ccc.y;
 	  ccc.name = "bmp_" + (HowManyCard+1);
-	
-		socket.emit('OK', [ttt, degree-90, (yyy/150)-2+72, (xxx/150)-3+72, slave_color]);
+	  
+	  /*if(sla_valX== null) {
+	    slav_valX = n
+	  }*/
+		socket.emit('OK', [ttt, degree-90, (yyy/150)-2+72, (xxx/150)-3+72, slave_color,  sla_valX, sla_valY]);
     //console.log(slave_color + "  UI");
 	  HowManyCard = wtf-1; //場上卡片數量
 	  cont.removeAllChildren();
