@@ -1,10 +1,5 @@
 <html>
   <head>
-    <style>
-      body {
-        background: black;
-      }
-    </style>
     <script src="script/createjs-2013.05.14.min.js"></script>
     <script src="script/jquery.js"></script>
     <script src="/socket.io/socket.io.js"></script>
