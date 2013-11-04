@@ -1,5 +1,3 @@
-//var http    = require('http'),
-//    fs      = require('fs'),
 var mysql = require('mysql');
 
 var express = require('express'),
@@ -16,36 +14,59 @@ var connection = mysql.createConnection({
     password : config.connectionPassword,
     database : config.connectionDatabase
 });
-/**
- * Server run at port 31023
- * @constructor
- */
-function why() {
-  var geditIsHardToUse;
-}
-/** Why? */
-server.listen(31023);
+
+server.listen(config.port);
 
 connection.connect();
-//require('./libs/routes').config(app, __dirname);
 
-//http.createServer(function(request, response) {
-//}).listen(3956);
 app.use('/script', express["static"](__dirname + '/script'));
 app.use('/css', express["static"](__dirname + '/css'));
 app.use('/assets', express["static"](__dirname + '/assets'));
 app.use('/files', express["static"](__dirname + '/files'));
 app.use(express.bodyParser());
+app.use(express.cookieParser());
+app.use(express.session({ secret: 'Star Island'}));
+app.engine('jshtml', require('jshtml-express'));
+app.set('view engine', 'jshtml');
 
-app.get('/', function(req, res){
-  res.sendfile('index.html');
+app.get('/', function(req, res) {
+  res.sendfile('login.html');
 });
 
-app.get('/drag', function(req, res){
+app.post('/login', function(req, res) {
+  var id = connection.escape(req.body.id),
+      pwd = connection.escape(req.body.pwd),
+      sql = 'SELECT * FROM player WHERE id LIKE ' + id + ' ANd pwd LIKE ' + pwd;
+
+  connection.query(sql, function(err, results) {
+    if(results.length === 1) {
+      console.log('results[0].id = ' + results[0].id)
+      req.session.playerId = results[0].id;
+      console.log(req.session.playerId);
+      req.session.wtf = 'wtf';
+      console.log(req.session.wtf);
+      res.redirect('/game');//socket.emit('auth', results[0]);
+    }
+    else {
+      res.send('invalid');
+    }
+  });
+
+})
+
+app.get('/game', function(req, res) {
+  res.locals({
+    title : 'title',
+    id : req.session.id,
+  });
+  res.render('index');//sendfile('index.html');
+});
+
+app.get('/drag', function(req, res) {
   res.sendfile('drag.html');
 });
 
-app.get('/contain', function(req, res){
+app.get('/contain', function(req, res) {
   res.sendfile('contain.html');
 });
 
@@ -60,6 +81,22 @@ io.sockets.on('connection', function(socket) {
   sessionids[connections] = socket.id;
   console.log(++connections);
   console.log(sessionids);
+  /**
+   * Get the exist tiles.
+   * @event getMap
+   * @fires map
+   */
+  socket.on('getMap', function() {
+    var sql = 'SELECT * FROM map';
+    connection.query(sql, function(err, results) {
+    /**
+     * Emit map info.
+     * @event map
+     * @return results
+     */
+      socket.emit('map', results);
+    });
+  });
   socket.on('disconnect', function() {
     console.log(connections);
   });
@@ -107,6 +144,8 @@ io.sockets.on('connection', function(socket) {
     io.sockets.emit('turn', color[turns]);
     io.sockets.emit('show', arr);
   });
+  socket.on('login', function(data) {
+  });
 });
 //app.get('/login', function(req, res){
 //  res.sendfile('login.html');
@@ -115,12 +154,6 @@ io.sockets.on('connection', function(socket) {
 //  console.log(req.body.login);
 //  var mysql      = require('mysql'),
 //      http       = require('http');
-//var connection = mysql.createConnection({
-//    host     : 'localhost',
-//      user     : 'node',
-//      password : 'edon',
-//      database : 'test'
-//});
 //
 //connection.connect();
 //

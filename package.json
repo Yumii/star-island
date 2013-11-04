@@ -1,0 +1,23 @@
+{
+  "name": "star-island",
+  "description": "Star Island is a tile-based German-style board game for two to five players.",
+  "scripts": {
+    "start": "node http.js"
+  },
+  "dependencies" : {
+    "mysql"           : "2.0.0-alpha9",
+    "express"         : "3.3.8",
+    "socket.io"       : "0.9.16",
+    "moment"          : "2.2.1",
+    "jshtml-express"  : "0.0.1"
+  },
+  "repository": {
+    "type" : "git",
+    "url"  : "git@github.com:adnil/star-island"
+  },
+  "author": "YCSM",
+  "license": "BSD-2-Clause",
+  "bugs": {
+    "url": "https://github.com/adnil/star-island/issues"
+  }
+}

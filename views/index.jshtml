@@ -1,5 +1,11 @@
 <html>
   <head>
+    <title>@locals.title</title>
+    <style>
+      body {
+        background: black;
+      }
+    </style>
     <script src="script/createjs-2013.05.14.min.js"></script>
     <script src="files/Button.js"></script>
     <script src="files/p2.js"></script>
@@ -10,7 +16,7 @@
     <script>
       var socket = io.connect('http://140.136.150.87');
 
-      var playerid = prompt('What is your id?');
+      //var playerid = @locals.id ;//prompt('What is your id?');
       var slave_color, slave_image, arr;
 
       var wtf = 1, wtf_click=0, wtf_slave = 1, ttt, cou=1, slaveTF=false, slave_XY, Mycolor, sla_valX, sla_valY;      
@@ -152,7 +158,7 @@
       }
       
       $(document).ready(function() {
-        socket.emit('id', playerid);
+        socket.emit('id', '@locals.id');
         socket.on('turn', function (data) {
           console.log(data); //data為該回合玩家的顏色
           var add = $("#add");
@@ -229,6 +235,10 @@
             default:
               break;
           }
+      });
+      socket.emit('getMap', 'give my map');
+      socket.on('map', function(data) {
+        console.log(data);
       });
       socket.on('show', function(arr) {
         console.log(arr);
@@ -340,9 +350,9 @@
 
   <body>
     <div style="width:900px;margin-left:auto;margin-right:auto;">
-    <canvas id="testCanvas" width="950" height="650" style="background:#203038"></canvas>
-    <button id="add" onclick="add()">Add New</button>
-    <button onclick="out()">Out</button>
+      <canvas id="testCanvas" width="950" height="650" style="background:#203038"></canvas>
+      <button id="add" onclick="add()">Add New</button>
+      <button onclick="out()">Out</button>
     </div>
   </body>
 </html>
