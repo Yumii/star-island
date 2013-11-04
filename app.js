@@ -30,7 +30,7 @@ app.engine('jshtml', require('jshtml-express'));
 app.set('view engine', 'jshtml');
 
 app.get('/', function(req, res) {
-  res.sendfile('login.html');
+  res.render('login');
 });
 
 app.post('/login', function(req, res) {
