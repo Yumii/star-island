@@ -1,6 +1,6 @@
 <html>
   <head>
-    <title>@locals.title</title>
+    <title>@locals.title @locals.playerId</title>
     <link type="text/css" rel="stylesheet" href="css/app.css">
     <script src="script/createjs-2013.05.14.min.js"></script>
     <script src="files/Button.js"></script>
@@ -154,7 +154,7 @@
       }
       
       $(document).ready(function() {
-        socket.emit('id', '@locals.id');
+        socket.emit('id', '@locals.playerId');
         socket.on('turn', function (data) {
           console.log(data); //data為該回合玩家的顏色
           var add = $("#add");
@@ -162,7 +162,7 @@
             console.log("ur turn");
             var check = cont_UI.getChildByName("check");
             check.visible = true;
-            
+            /*
             var image = new Image();
             temp = true;
             while(temp) {
@@ -179,7 +179,7 @@
             judge();
             sla_valX = null;
             sla_valY = null;
-            slaveTF = false;
+            slaveTF = false;*/
             
             update = true;
             add.show();
@@ -207,34 +207,40 @@
           alert(str);
         });
       });
-      socket.on('color', function(color) {
-        slave_color = color;
-        slave_image.src = "assets/slave-" + color + ".png";
-        console.log(color);
-        cont_UI.addChild(cont_UI.getChildByName("slave"));
-        switch(slave_color){
-            case "blue":
-              Mycolor = 0;
-              break;
-            case "gray":
-              Mycolor = 1;
-              break;
-            case "green":
-              Mycolor = 2;
-              break;
-            case "red":
-              Mycolor = 3;
-              break;
-            case "yellow":
-              Mycolor = 4;
-              break;
-            default:
-              break;
-          }
-      });
       socket.emit('getMap', 'give my map');
+      socket.on('color', function(color) {
+        if(color !== 'full') {
+          slave_color = color;
+          slave_image.src = "assets/slave-" + color + ".png";
+          console.log(color);
+          cont_UI.addChild(cont_UI.getChildByName("slave"));
+          switch(slave_color){
+          case "blue":
+            Mycolor = 0;
+            break;
+          case "gray":
+            Mycolor = 1;
+            break;
+          case "green":
+            Mycolor = 2;
+            break;
+          case "red":
+            Mycolor = 3;
+            break;
+          case "yellow":
+            Mycolor = 4;
+            break;
+          default:
+            break;
+          }
+        }
+        else {
+          slave_image.visible = false;
+        }
+      });
       socket.on('map', function(data) {
         console.log(data);
+        // TODO: show the map
       });
       socket.on('show', function(arr) {
         console.log(arr);
