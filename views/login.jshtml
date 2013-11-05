@@ -1,5 +1,6 @@
 <html>
   <head>
+    <link type="text/css" rel="stylesheet" href="css/app.css">
     <script src="script/jquery.js"></script>
     <script src="/socket.io/socket.io.js"></script>
     <script>
