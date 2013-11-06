@@ -162,8 +162,8 @@
             console.log("ur turn");
             var check = cont_UI.getChildByName("check");
             check.visible = true;
-            /*
-            var image = new Image();
+            
+          /*  var image = new Image();
             temp = true;
             while(temp) {
               ttt=Math.ceil(24* Math.random());
