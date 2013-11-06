@@ -108,8 +108,9 @@ function handleImageSlave(event) {
 		  cont_temp_slave.addChild(target);
 		  var offset = {x:target.x-evt.stageX, y:target.y-evt.stageY};
 		  
+		  
 		  	console.log(bitmap.name);
-	      	console.log(slave_color + "*****");
+	      	//console.log(slave_color + "*****");
 	      	var image_s = new Image();
 	      	image_s.src = "assets/slave"+ slave_color +".png";
 	      	bitmap_s = new createjs.Bitmap(image_s);
@@ -132,6 +133,7 @@ function handleImageSlave(event) {
 	    	slave_len = cont_slave.children.length;
 			
 		  update = true;
+		  createjs.Ticker.addListener(stage);
 		  stage.update();
 		}
 	  })(bitmap);

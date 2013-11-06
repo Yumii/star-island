@@ -166,9 +166,10 @@ function frame_rotate(event){	//旋轉
       degree+=90;
       CardsDegree[HowManyCard] = degree-90;
       cont_temp_slave.removeAllChildren();
-
-      update = true;
 	    judge();
+
+      createjs.Ticker.addListener(stage);
+      stage.update();
   }
 }
 function frame_slave(event){	//小人
@@ -184,6 +185,14 @@ function frame_slave(event){	//小人
   bitmap_UI.onClick = function(){
     if(cont.getChildAt(0).visible == false || cont.getChildAt(0) == undefined) {
       slaveXY();
+    }
+    if(slaveTF == true) {
+      cont_slave.removeChildAt(cont_slave.children.length-1);
+      slave_XY[Mycolor].splice(slave_XY[Mycolor].length-1, 1);
+      console.log(slave_XY[Mycolor] + "************* slave_XY");
+      slaveTF == false;
+      sla_valX = null;
+      sla_valY = null;
     }
   }
 
@@ -326,7 +335,7 @@ function check(event){
 	  CardsDegree[HowManyCard-1] = degree-90; //存使用者所旋轉的度數
     TypeOfCard[HowManyCard-1] = ttt;//存使用者所抽到的卡片種類
     mapInfo[(yyy/150)-2+72][(xxx/150)-3+72]=n;
-    
+    slaveTF = false;
     createjs.Ticker.addListener(stage);
     stage.update();
 	
