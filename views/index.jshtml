@@ -18,8 +18,8 @@
       var wtf = 1, wtf_click=0, wtf_slave = 1, ttt, cou=1, slaveTF=false, slave_XY, Mycolor, sla_valX, sla_valY;      
 
       var canvas, stage, cont, cont_2, cont_3, cont_UI, cont_temp_slave, degree, ttt;//"ttt"為該回合所抽取的卡片種類
-      var mouseTarget;	// the display object currently under the mouse, or being dragged
-      var dragStarted;	// indicates whether we are currently in a drag operation
+      var mouseTarget;  // the display object currently under the mouse, or being dragged
+      var dragStarted;  // indicates whether we are currently in a drag operation
       var offset;
       var cardX = new Array(72); //紀錄卡片位置
       var cardY = new Array(72);
@@ -34,7 +34,7 @@
       var HowManyPlayer=0;//玩家人數
       var RedRangeX = new Array(72);  //紀錄卡片可擺位置
       var RedRangeY = new Array(72);
-      //var rotate_degree=0;	//旋轉角度
+      //var rotate_degree=0;  //旋轉角度
       var update = true;
       
       window.onload=function(){
@@ -48,7 +48,7 @@
         cont_2 = new createjs.Container();
         cont_3 = new createjs.Container();
         cont_UI = new createjs.Container();
-       cont_temp_slave = new createjs.Container(); //放slave的產生位置(每回合都會變) , 所以每次確定後會刪除此此containerr內的物件
+        cont_temp_slave = new createjs.Container(); //放slave的產生位置(每回合都會變) , 所以每次確定後會刪除此此containerr內的物件
         cont_slave = new createjs.Container(); //放每個人確定後的slave物件
         
         stage.addChild(cont_3);
@@ -59,22 +59,22 @@
         stage.addChild(cont);
         
         cont_2.onPress = function(evt) {
-				  var offset = {x:evt.target.x-evt.stageX, y:evt.target.y-evt.stageY};
-				
-				  evt.onMouseMove = function(ev) {
-					  ev.target.x = ev.stageX+offset.x;
-					  ev.target.y = ev.stageY+offset.y;
-					
-					  cont_3.x = ev.target.x; cont_3.y = ev.target.y;
-					  cont_temp_slave.x = ev.target.x; cont_temp_slave.y = ev.target.y;
-					  cont_slave.x = ev.target.x; cont_slave.y = ev.target.y;
-					  update = true;
-				  }
-				
-			  }
-		
-		    //Staring image
-		    var image = new Image();
+          var offset = {x:evt.target.x-evt.stageX, y:evt.target.y-evt.stageY};
+        
+          evt.onMouseMove = function(ev) {
+            ev.target.x = ev.stageX+offset.x;
+            ev.target.y = ev.stageY+offset.y;
+          
+            cont_3.x = ev.target.x; cont_3.y = ev.target.y;
+            cont_temp_slave.x = ev.target.x; cont_temp_slave.y = ev.target.y;
+            cont_slave.x = ev.target.x; cont_slave.y = ev.target.y;
+            update = true;
+          }
+        
+        }
+    
+        //Staring image
+        var image = new Image();
           image.src = "assets/20c.png"
           image.onload = handleImageLoad;
           
@@ -114,8 +114,8 @@
         var bitmap = new createjs.Bitmap(image);
         cont.addChild(bitmap);
         bitmap.regX = 150;
-		    bitmap.regY = 150;
-		    bitmap.scaleX = bitmap.scaleY = bitmap.scale = 0.5;
+        bitmap.regY = 150;
+        bitmap.scaleX = bitmap.scaleY = bitmap.scale = 0.5;
         bitmap.x=850;
         bitmap.y=550;
         
@@ -131,26 +131,26 @@
       function out() {
         if(cont_temp_slave.children.length==0){
           wtf--;
-        	wtf_click=0;      	
-        	cont.removeChildAt(0);
-        	cont_2.removeChildAt(HowManyCard);
-        	cont_3.removeAllChildren();
-        	/*if(wtf==2){
-        	  cont_2.removeChildAt(0);
-        		HowManyCard=0;
-        		wtf=1;
-        		var image = new Image();
+          wtf_click=0;        
+          cont.removeChildAt(0);
+          cont_2.removeChildAt(HowManyCard);
+          cont_3.removeAllChildren();
+          /*if(wtf==2){
+            cont_2.removeChildAt(0);
+            HowManyCard=0;
+            wtf=1;
+            var image = new Image();
             image.src = "assets/11c.png"
             image.onload = handleImageLoad;
           
           }*/
-        	update=true;
-        	stage.update();
+          update=true;
+          stage.update();
         }
         else {
           console.log("There have some frames that you can put this card.");
         }
-      	
+        
       }
       
       $(document).ready(function() {
@@ -241,61 +241,48 @@
       socket.on('map', function(data) {
         console.log(data);
         // TODO: show the map
-      });
-      socket.on('show', function(arr) {
-        console.log(arr);
         
-        if(slave_color != arr[4]) {
-          CardNumber[arr[0]-1]--;
-		      var image = new Image();
-		      ttt = arr[0];
-		      xxx = (arr[3]-69)*150;
-		      yyy = (arr[2]-70)*150;
-		      image.src = "assets/" + ttt + "c.png"
-		      image.onload = function(event) {
-		        var image = event.target;
-		        var bitmap;
-		        bitmap = new createjs.Bitmap(image);
-		        cont_2.addChild(bitmap);
-		        bitmap.regX = bitmap.image.width/2|0;
-		        bitmap.regY = bitmap.image.height/2|0;
-		        bitmap.scaleX = bitmap.scaleY = bitmap.scale = 0.5;
-		        bitmap.name = "bmp_"+wtf;
-		        bitmap.x = (arr[3]-69)*150;
-		        bitmap.y = (arr[2]-70)*150;
-		        wtf++;
-		        degree=arr[1] ;
-		        bitmap.rotation=degree;
-		        RedNumber = -1;
-		        HowManyCard ++;
-		        /*var bitmap = cont_2.getChildByName("bmp_"+(wtf));
-		        bitmap.y = yyy;
-		        bitmap.x = xxx;*/
-		        cardX[HowManyCard-1] = xxx; 
-		        cardY[HowManyCard-1] = yyy;
-		        RedNumber=0;wtf_click=0;
-		        cou++;
-		        CardsDegree[HowManyCard-1] = degree;
-		        direction =  (degree)/90;
-		        //console.log(degree-90 + "  DDDD");
-		        TypeOfCard[HowManyCard-1] = ttt;
-		        n=ttt;
-		        direction %= 4 ; // 旋轉次數 mod 4
-			      n += (24*direction);
-		        mapInfo[(yyy/150)-2+72][(xxx/150)-3+72]=n;
-		        //console.log(n);
-		    
-          }
-        if(arr[5] != null) {
-          image = new Image();
-          image.src = "assets/slave" + arr[4] + ".png"
-          image.onload = function(event) {
-          var image = event.target;
+        /*console.log(arr);
+        
+        if(slave_color != arr[4]) {*/
+        var thisCardHandle = function(image, thisCard) {
           var bitmap;
-            bitmap = new createjs.Bitmap(image);
-            cont_slave.addChild(bitmap);
-            bitmap.x = arr[5];
-            bitmap.y = arr[6];
+          bitmap = new createjs.Bitmap(image);
+          cont_2.addChild(bitmap);
+          bitmap.regX = 150;//bitmap.image.width/2|0;
+          bitmap.regY = 150;//bitmap.image.height/2|0;
+          bitmap.scaleX = bitmap.scaleY = bitmap.scale = 0.5;
+          bitmap.name = "bmp_"+wtf;
+          console.log("i: " + i);
+          bitmap.x = (thisCard.puz_row - 69) * 150;
+          console.log("thisCard.puz_row: " + thisCard.puz_row);
+          bitmap.y = (thisCard.puz_col - 70) * 150;
+          console.log("thisCard.puz_col: " + thisCard.puz_col);
+          wtf++;
+          degree = thisCard.puz_direction;
+          bitmap.rotation=degree;
+          RedNumber = -1;
+          HowManyCard ++;
+          cardX[HowManyCard - 1] = xxx; 
+          cardY[HowManyCard - 1] = yyy;
+          RedNumber = 0;
+          wtf_click = 0;
+          cou++;
+          CardsDegree[HowManyCard - 1] = degree;
+          direction =  degree / 90;
+          TypeOfCard[HowManyCard - 1] = ttt;
+          n = ttt;
+          direction %= 4 ; // 旋轉次數 mod 4
+          n += (24 * direction);
+          mapInfo[(yyy / 150) - 2 + 72][(xxx / 150) - 3 + 72] = n;
+      
+        }
+        var slaveHandle = function(image_slave, thisCard) {
+          var bitmap;
+          bitmap = new createjs.Bitmap(image_slave);
+          cont_slave.addChild(bitmap);
+          bitmap.x = thisCard.slave_x;
+          bitmap.y = thisCard.slave_y;
           bitmap.regX = bitmap.image.width/2|0;
           bitmap.regY = bitmap.image.height/2|0;
           bitmap.scaleX = bitmap.scaleY = bitmap.scale = 0.15;
@@ -303,46 +290,153 @@
           wtf_slave++;
           update = true;
           
-          switch(arr[4]) {
-            case "blue":
-              temp = 0;
-              break;
-            case "gray":
-              temp = 1;
-              break;
-            case "green":
-              temp = 2;
-              break;
-            case "red":
-              temp = 3;
-              break;
-            case "yellow":
-              temp = 4;
-              break;
-            default:
-              break;
+          switch(thisCard.id) {
+          case "blue":
+            temp = 0;
+            break;
+          case "gray":
+            temp = 1;
+            break;
+          case "green":
+            temp = 2;
+            break;
+          case "red":
+            temp = 3;
+            break;
+          case "yellow":
+            temp = 4;
+            break;
+          default:
+            break;
           }
-          //console.log(temp + "  ********");
           
-         if(slave_XY[temp] == undefined) {
-      	  slave_XY[temp]=[];
-      	 }
-      	 console.log(bitmap + " // " + slave_XY[temp] + "   bitmap");
-         slave_XY[temp].splice(slave_XY[temp].length, 0, bitmap);
-         //slave_Y[Mycolor].splice = ([slave_XY[Mycolor].length], 0, arr[6]);
-         //console.log(slave_XY[temp] + "another one");
-         console.log(slave_XY[temp].length + " // " + slave_XY[temp] +"    slave_XY[temp].length");
-         }
-         
-         
-         
+          if(slave_XY[temp] == undefined) {
+            slave_XY[temp]=[];
+          }
+          console.log(bitmap + " // " + slave_XY[temp] + "   bitmap");
+          slave_XY[temp].splice(slave_XY[temp].length, 0, bitmap);
+          console.log(slave_XY[temp].length + " // " + slave_XY[temp] +" slave_XY[temp].length");
         }
+        var existCards = data.length,
+            thisCard = {},
+            i = 0;
+        for(; i < existCards; i += 1) {
+          console.log("now at " + i + ", data[i].id" + data[i].id)
+          thisCard = data[i];
+          CardNumber[thisCard.puz_no]--;
+          var image = new Image();
+          ttt = thisCard.puz_no;
+          xxx = (thisCard.puz_row - 69) * 150;
+          yyy = (thisCard.puz_col - 70) * 150;
+          image.src = "assets/" + ttt + "c.png"
+          image.onload = thisCardHandle(image, thisCard);
+          if(thisCard.slave_x != 0 && thisCard.slave_y != 0) {
+            var image_slave = new Image();
+            image_slave.src = "assets/slave" + thisCard.id + ".png"
+            image_slave.onload = slaveHandle(image_slave, thisCard);
+          }
+        }
+        update = true;
+        
+      });
+      socket.on('show', function(arr) {
+        console.log(arr);
+        
+        if(slave_color != arr[4]) {
+          CardNumber[arr[0]-1]--;
+          var image = new Image();
+          ttt = arr[0];
+          xxx = (arr[3]-69)*150;
+          yyy = (arr[2]-70)*150;
+          image.src = "assets/" + ttt + "c.png"
+          image.onload = function(event) {
+            var image = event.target;
+            var bitmap;
+            bitmap = new createjs.Bitmap(image);
+            cont_2.addChild(bitmap);
+            bitmap.regX = bitmap.image.width/2|0;
+            bitmap.regY = bitmap.image.height/2|0;
+            bitmap.scaleX = bitmap.scaleY = bitmap.scale = 0.5;
+            bitmap.name = "bmp_"+wtf;
+            bitmap.x = (arr[3]-69)*150;
+            bitmap.y = (arr[2]-70)*150;
+            wtf++;
+            degree=arr[1] ;
+            bitmap.rotation=degree;
+            RedNumber = -1;
+            HowManyCard ++;
+            /*var bitmap = cont_2.getChildByName("bmp_"+(wtf));
+            bitmap.y = yyy;
+            bitmap.x = xxx;*/
+            cardX[HowManyCard-1] = xxx; 
+            cardY[HowManyCard-1] = yyy;
+            RedNumber=0;wtf_click=0;
+            cou++;
+            CardsDegree[HowManyCard-1] = degree;
+            direction =  (degree)/90;
+            //console.log(degree-90 + "  DDDD");
+            TypeOfCard[HowManyCard-1] = ttt;
+            n=ttt;
+            direction %= 4 ; // 旋轉次數 mod 4
+            n += (24*direction);
+            mapInfo[(yyy/150)-2+72][(xxx/150)-3+72]=n;
+            //console.log(n);
+        
+          }
+          if(arr[5] != null) {
+            image = new Image();
+            image.src = "assets/slave" + arr[4] + ".png"
+            image.onload = function(event) {
+              var image = event.target;
+              var bitmap;
+              bitmap = new createjs.Bitmap(image);
+              cont_slave.addChild(bitmap);
+              bitmap.x = arr[5];
+              bitmap.y = arr[6];
+              bitmap.regX = bitmap.image.width/2|0;
+              bitmap.regY = bitmap.image.height/2|0;
+              bitmap.scaleX = bitmap.scaleY = bitmap.scale = 0.15;
+              bitmap.name = "slave_" + wtf_slave;
+              wtf_slave++;
+              update = true;
+              
+              switch(arr[4]) {
+              case "blue":
+                temp = 0;
+                break;
+              case "gray":
+                temp = 1;
+                break;
+              case "green":
+                temp = 2;
+                break;
+              case "red":
+                temp = 3;
+                break;
+              case "yellow":
+                temp = 4;
+                break;
+              default:
+                break;
+              }
+              //console.log(temp + "  ********");
+              
+              if(slave_XY[temp] == undefined) {
+                slave_XY[temp]=[];
+              }
+              console.log(bitmap + " // " + slave_XY[temp] + "   bitmap");
+              slave_XY[temp].splice(slave_XY[temp].length, 0, bitmap);
+              //slave_Y[Mycolor].splice = ([slave_XY[Mycolor].length], 0, arr[6]);
+              //console.log(slave_XY[temp] + "another one");
+              console.log(slave_XY[temp].length + " // " + slave_XY[temp] +" slave_XY[temp].length");
+            }
+           
+           
+           
+          }
          
          
        
-        }
-        else {
-        	
         }
         
         update = true;

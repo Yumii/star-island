@@ -105,7 +105,6 @@ io.sockets.on('connection', function(socket) {
     var reconnect = false,
         i = 0,
         players = ids.length;
-    if(players <= 5) { // TODO: change 5 to number of player of the desk
       for(; i < players; i += 1) {
         if(ids[i] === playerId) {
           reconnect = true;
@@ -115,6 +114,7 @@ io.sockets.on('connection', function(socket) {
           break;
         }
       }
+    if(players <= 5) { // TODO: change 5 to number of player of the desk
       if(reconnect) {
         connections--;
         socket.emit('color', color[i])
@@ -137,7 +137,7 @@ io.sockets.on('connection', function(socket) {
   });
   socket.on('OK', function(arr) {
     console.log(arr);
-    connection.query("INSERT INTO map (`id`, `round`, `puz_no`, `puz_direction`, `puz_col`, `puz_row`, `slave_place`) VALUES ('"+color[turns]+"', '"+round+"', '"+arr[0]+"', '"+arr[1]+"', '"+arr[2]+"', '"+arr[3]+"', '0')", function(err, rows, fields) {
+    connection.query("INSERT INTO map (`id`, `round`, `puz_no`, `puz_direction`, `puz_col`, `puz_row`, `slave_place`, `slave_x`, `slave_y`) VALUES ('"+color[turns]+"', '"+round+"', '"+arr[0]+"', '"+arr[1]%360+"', '"+arr[2]+"', '"+arr[3]+"', '0', '"+arr[5]+"', '"+arr[6]+"')", function(err, rows, fields) {
       if (err) throw err;
         datas = rows;
     });
