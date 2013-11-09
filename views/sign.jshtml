@@ -1,0 +1,22 @@
+<html>
+  <head>
+    <title>Sign Up | Star Island</title>
+    <link type="text/css" rel="stylesheet" href="css/app.css">
+    <script src="script/jquery.js"></script>
+    <script>
+      $(document).ready(function() {
+        $('#id').focus();
+      });
+    </script>
+  </head>
+  <body>
+    <div class="content">
+      <form method="post" action="signup">
+        <label>ID: <input type="text" name="id" id="id"/></label><br />
+        <label>Name: <input type="text" name="name" /></label><br />
+        <label>Password: <input type="password" name="pwd" /></label><br />
+        <input type="submit" value="Sign Up" />
+      </form>
+    </div>
+  </body>
+</html>

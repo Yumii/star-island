@@ -33,6 +33,27 @@ app.get('/', function(req, res) {
   res.render('login');
 });
 
+app.get('/sign', function(req, res) {
+  res.render('sign');
+});
+
+app.post('/signup', function(req, res) {
+  var name = connection.escape(req.body.name),
+      id = connection.escape(req.body.id),
+      pwd = connection.escape(req.body.pwd),
+      sql = "INSERT INTO player (`name`, `id`, `pwd`, `createdTime`, `getScore`) VALUES (" + name + ", " + id + ", " + pwd + ", CURRENT_TIMESTAMP, '0')";
+  connection.query(sql, function(err, results) {
+    if(err) {
+      console.log(err);
+      res.send('Error');
+    }
+    else
+    {
+      res.redirect('/');
+    }
+  });
+})
+
 app.post('/login', function(req, res) {
   var id = connection.escape(req.body.id),
       pwd = connection.escape(req.body.pwd),
