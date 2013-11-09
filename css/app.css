@@ -2,6 +2,42 @@ body {
   background: black;
 }
 
+form {
+  margin: 0;
+}
+
+p {
+  color: gray;
+  background: #203038;
+  opacity: .75;
+  border-radius: 3px;
+  padding: 0px 5px;
+  margin: 2px 0px;
+}
+
+p.blue {
+  color: lightblue;
+}
+
+p.gray {
+  color: white;
+}
+
+p.green {
+  color: lightgreen;
+}
+
+p.red {
+  color: red;
+}
+
+p.yellow {
+  color: yellow;
+}
+
+p.else {
+  color: gray;
+}
 /* login content */
 .content {
   height: 400px;
@@ -10,9 +46,21 @@ body {
   margin: 0 auto;
 }
 
+/* desk, game page container */
+.container {
+  margin: 0 auto;
+  width: 950px;
+}
+
 /* desk, game canvas */
 #canvas {
-  width: 950px;
-  height: 650px;
   background: #203038;
+}
+
+/*  */
+#input {
+  width: 845px;
+}
+#sub {
+  width: 100px;
 }

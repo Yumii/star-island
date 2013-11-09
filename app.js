@@ -42,10 +42,11 @@ app.post('/login', function(req, res) {
     if(results.length === 1) {
       console.log('results[0].id = ' + results[0].id)
       req.session.playerId = results[0].id;
+      req.session.playerName = results[0].name;
       console.log(req.session.playerId);
       req.session.wtf = 'wtf';
       console.log(req.session.wtf);
-      res.redirect('/game');//socket.emit('auth', results[0]);
+      res.redirect('/game');
     }
     else {
       res.send('invalid');
@@ -58,16 +59,9 @@ app.get('/game', function(req, res) {
   res.locals({
     title : 'title',
     playerId : req.session.playerId,
+    playerName : req.session.playerName
   });
   res.render('index');//sendfile('index.html');
-});
-
-app.get('/drag', function(req, res) {
-  res.sendfile('drag.html');
-});
-
-app.get('/contain', function(req, res) {
-  res.sendfile('contain.html');
 });
 
 var connections = 0,
@@ -77,10 +71,6 @@ var connections = 0,
     color = ['blue', 'gray', 'green', 'red', 'yellow'],
     round = 1;
 io.sockets.on('connection', function(socket) {
-  //console.log(socket.id);
-  //sessionids[connections] = socket.id;
-  //console.log(++connections);
-  //console.log(sessionids);
   /**
    * Get the exist tiles.
    * @event getMap
@@ -105,28 +95,27 @@ io.sockets.on('connection', function(socket) {
     var reconnect = false,
         i = 0,
         players = ids.length;
-      for(; i < players; i += 1) {
-        if(ids[i] === playerId) {
-          reconnect = true;
-          console.log('ids is ' + ids);
-          console.log('playerId is ' + playerId);
-          console.log('Reconnect!');
-          break;
-        }
+    for(i = 0; i < players; i += 1) {
+      if(ids[i] === playerId) {
+        reconnect = true;
+        console.log('ids is ' + ids);
+        console.log('playerId is ' + playerId);
+        console.log('Reconnect!');
+        break;
       }
-    if(players <= 5) { // TODO: change 5 to number of player of the desk
-      if(reconnect) {
-        connections--;
-        socket.emit('color', color[i])
-        socket.emit('turn', color[turns]);
-        // TODO: player who reconnect can directly get map
-      }
-      else {
-        ids[players] = playerId;
-        console.log(ids);
-        socket.emit('color', color[players]);
-        socket.emit('turn', color[turns]);
-      }
+    }
+    if(reconnect) {
+      connections--;
+      socket.emit('color', color[i]);
+      socket.emit('turn', color[turns]);
+      // TODO: player who reconnect can directly get map
+    }
+    else if(players < 5) {
+      console.log(players)
+      ids[players] = playerId;
+      console.log(ids);
+      socket.emit('color', color[players]);
+      socket.emit('turn', color[turns]);
     }
     else {
       socket.emit('color', 'full');
@@ -147,25 +136,8 @@ io.sockets.on('connection', function(socket) {
   });
   socket.on('login', function(data) {
   });
+  socket.on('msg', function(message) {
+    io.sockets.emit('msg', message);
+    console.log(message);
+  });
 });
-//app.get('/login', function(req, res){
-//  res.sendfile('login.html');
-//});
-//app.post('/table', function(req, res){
-//  console.log(req.body.login);
-//  var mysql      = require('mysql'),
-//      http       = require('http');
-//
-//connection.connect();
-//
-//connection.query('SELECT * FROM player WHERE id = "test"', function(err, rows, fields) {
-//    if (err) throw err;
-//      console.log('(find id == test)');
-//        console.log('The data is: ', rows[0]);
-//});
-//
-//connection.end();
-////  res.sendfile('drag.html');
-//  res.send('id: ' + req.body.login);
-//});
-

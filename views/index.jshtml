@@ -1,6 +1,6 @@
 <html>
   <head>
-    <title>@locals.title @locals.playerId</title>
+    <title>Star Island</title>
     <link type="text/css" rel="stylesheet" href="css/app.css">
     <script src="script/createjs-2013.05.14.min.js"></script>
     <script src="files/Button.js"></script>
@@ -39,7 +39,7 @@
       
       window.onload=function(){
         // create stage and point it to the canvas:
-        canvas = document.getElementById("testCanvas");
+        canvas = document.getElementById("canvas");
         
         //check to see if we are running in a browser with touch support
         stage = new createjs.Stage(canvas);
@@ -103,7 +103,7 @@
             temp = false;
           }
         }
-        
+        console.log(ttt);
         image.src = "assets/" + ttt+ "c.png"
         image.onload = handleImageLoad;
         degree=90;
@@ -152,43 +152,25 @@
         }
         
       }
-      
       $(document).ready(function() {
         socket.emit('id', '@locals.playerId');
         socket.on('turn', function (data) {
           console.log(data); //data為該回合玩家的顏色
-          var add = $("#add");
+          var addBtn = $("#add"),
+              check = cont_UI.getChildByName("check");
           if(data === slave_color) { //slave_color為每個玩家自己的顏色
             console.log("ur turn");
-            var check = cont_UI.getChildByName("check");
-            check.visible = true;
-            
-          /*  var image = new Image();
-            temp = true;
-            while(temp) {
-              ttt=Math.ceil(24* Math.random());
-              if(CardNumber[ttt-1]!==0) {
-                CardNumber[ttt-1]--;
-                temp = false;
-              }
-            }
-            image.src = "assets/" + ttt+ "c.png"
-            image.onload = handleImageLoad;
-            degree=90;
-            RedNumber=-1;
+            add();
             judge();
-            sla_valX = null;
-            sla_valY = null;
-            slaveTF = false;*/
-            
+            console.log('Where is add new?');
             update = true;
-            add.show();
+            addBtn.show();
           }
           else {
-            var check = cont_UI.getChildByName("check");
+            check = cont_UI.getChildByName("check");
             check.visible = false;
             update = true;
-            add.hide();
+            addBtn.hide();
           }
           var colors = ['blue', 'gray', 'green', 'red', 'yellow'];
           for(var i in colors) {
@@ -205,6 +187,13 @@
         });
         socket.on('alert', function(str) {
           alert(str);
+        });
+        $('#target').submit(function(event) {
+          event.preventDefault();
+          var input = $('#input');
+          var message = input.val();
+          input.val('');
+          socket.emit('msg', ['@locals.playerName', message, slave_color]);
         });
       });
       socket.emit('getMap', 'give my map');
@@ -441,14 +430,23 @@
         
         update = true;
       });
+      socket.on('msg', function(message) {
+        var messageClass = message[2] || 'else';
+        $('<p>').append(message[0] + ': ' +message[1]).addClass(messageClass).prependTo("#messages")
+      })
     </script>
   </head>
 
   <body>
-    <div style="width:900px;margin-left:auto;margin-right:auto;">
-      <canvas id="testCanvas" width="950" height="650" style="background:#203038"></canvas>
+    <div class="container">
+      <canvas id="canvas" width="950" height="650"></canvas>
       <button id="add" onclick="add()">Add New</button>
       <button onclick="out()">Out</button>
+      <form id="target" action=".">
+        <input type="text" id="input"></input>
+        <input type="submit" id="sub" value="Send"></input>
+      </form>
+      <div id="messages"></div>
     </div>
   </body>
 </html>
