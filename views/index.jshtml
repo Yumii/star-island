@@ -103,7 +103,7 @@
             temp = false;
           }
         }
-        console.log(ttt);
+        //console.log(ttt);
         image.src = "assets/" + ttt+ "c.png"
         image.onload = handleImageLoad;
         degree=90;
@@ -120,7 +120,6 @@
         bitmap.y=550;
         
         RedNumber=-1;
-        
         judge();
         sla_valX = null;
         sla_valY = null;
@@ -155,16 +154,16 @@
       $(document).ready(function() {
         socket.emit('id', '@locals.playerId');
         socket.on('turn', function (data) {
-          console.log(data); //data為該回合玩家的顏色
+          //console.log(data); //data為該回合玩家的顏色
           var addBtn = $("#add"),
               check = cont_UI.getChildByName("check");
           if(data === slave_color) { //slave_color為每個玩家自己的顏色
             console.log("ur turn");
             add();
             judge();
-            console.log('Where is add new?');
+            //console.log('Where is add new?');
             update = true;
-            addBtn.show();
+            addBtn.hide();
           }
           else {
             check = cont_UI.getChildByName("check");
@@ -175,7 +174,7 @@
           var colors = ['blue', 'gray', 'green', 'red', 'yellow'];
           for(var i in colors) {
             var handcard = cont_UI.getChildByName("handcard-" + colors[i]);
-            console.log("slave-" + colors[i]);
+            //console.log("slave-" + colors[i]);
             if(data != colors[i]) {
               handcard.alpha = 0.5;
             }
@@ -201,7 +200,7 @@
         if(color !== 'full') {
           slave_color = color;
           slave_image.src = "assets/slave-" + color + ".png";
-          console.log(color);
+          //console.log(color);
           cont_UI.addChild(cont_UI.getChildByName("slave"));
           switch(slave_color){
           case "blue":
@@ -228,7 +227,7 @@
         }
       });
       socket.on('map', function(data) {
-        console.log(data);
+        //console.log(data);
         // TODO: show the map
         
         /*console.log(arr);
@@ -242,17 +241,18 @@
           bitmap.regY = 150;//bitmap.image.height/2|0;
           bitmap.scaleX = bitmap.scaleY = bitmap.scale = 0.5;
           bitmap.name = "bmp_"+wtf;
-          console.log("i: " + i);
+          //console.log("i: " + i);
           bitmap.x = (thisCard.puz_row - 69) * 150;
-          console.log("thisCard.puz_row: " + thisCard.puz_row);
+          //console.log("thisCard.puz_row: " + thisCard.puz_row);
           bitmap.y = (thisCard.puz_col - 70) * 150;
-          console.log("thisCard.puz_col: " + thisCard.puz_col);
+          //console.log("thisCard.puz_col: " + thisCard.puz_col);
           wtf++;
           degree = thisCard.puz_direction;
           bitmap.rotation=degree;
           RedNumber = -1;
           HowManyCard ++;
-          cardX[HowManyCard - 1] = xxx; 
+          console.log(HowManyCard);
+          cardX[HowManyCard - 1] = xxx;
           cardY[HowManyCard - 1] = yyy;
           RedNumber = 0;
           wtf_click = 0;
@@ -272,8 +272,8 @@
           cont_slave.addChild(bitmap);
           bitmap.x = thisCard.slave_x;
           bitmap.y = thisCard.slave_y;
-          bitmap.regX = bitmap.image.width/2|0;
-          bitmap.regY = bitmap.image.height/2|0;
+          bitmap.regX = 200;//bitmap.image.width/2|0;
+          bitmap.regY = 200;//bitmap.image.height/2|0;
           bitmap.scaleX = bitmap.scaleY = bitmap.scale = 0.15;
           bitmap.name = "slave_" + wtf_slave;
           wtf_slave++;
@@ -302,22 +302,22 @@
           if(slave_XY[temp] == undefined) {
             slave_XY[temp]=[];
           }
-          console.log(bitmap + " // " + slave_XY[temp] + "   bitmap");
+          //console.log(bitmap + " // " + slave_XY[temp] + "   bitmap");
           slave_XY[temp].splice(slave_XY[temp].length, 0, bitmap);
-          console.log(slave_XY[temp].length + " // " + slave_XY[temp] +" slave_XY[temp].length");
+          //console.log(slave_XY[temp].length + " // " + slave_XY[temp] +" slave_XY[temp].length");
         }
         var existCards = data.length,
             thisCard = {},
             i = 0;
         for(; i < existCards; i += 1) {
-          console.log("now at " + i + ", data[i].id" + data[i].id)
+          //console.log("now at " + i + ", data[i].id " + data[i].id)
           thisCard = data[i];
           CardNumber[thisCard.puz_no]--;
           var image = new Image();
-          ttt = thisCard.puz_no;
+          var uuu = thisCard.puz_no;
           xxx = (thisCard.puz_row - 69) * 150;
           yyy = (thisCard.puz_col - 70) * 150;
-          image.src = "assets/" + ttt + "c.png"
+          image.src = "assets/" + uuu + "c.png"
           image.onload = thisCardHandle(image, thisCard);
           if(thisCard.slave_x != 0 && thisCard.slave_y != 0) {
             var image_slave = new Image();
@@ -329,7 +329,7 @@
         
       });
       socket.on('show', function(arr) {
-        console.log(arr);
+        //console.log(arr);
         
         if(slave_color != arr[4]) {
           CardNumber[arr[0]-1]--;
@@ -413,11 +413,11 @@
               if(slave_XY[temp] == undefined) {
                 slave_XY[temp]=[];
               }
-              console.log(bitmap + " // " + slave_XY[temp] + "   bitmap");
+              //console.log(bitmap + " // " + slave_XY[temp] + "   bitmap");
               slave_XY[temp].splice(slave_XY[temp].length, 0, bitmap);
               //slave_Y[Mycolor].splice = ([slave_XY[Mycolor].length], 0, arr[6]);
               //console.log(slave_XY[temp] + "another one");
-              console.log(slave_XY[temp].length + " // " + slave_XY[temp] +" slave_XY[temp].length");
+              //console.log(slave_XY[temp].length + " // " + slave_XY[temp] +" slave_XY[temp].length");
             }
            
            
@@ -440,7 +440,6 @@
   <body>
     <div class="container">
       <canvas id="canvas" width="950" height="650"></canvas>
-      <button id="add" onclick="add()">Add New</button>
       <button onclick="out()">Out</button>
       <form id="target" action=".">
         <input type="text" id="input"></input>

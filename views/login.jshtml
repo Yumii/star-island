@@ -1,14 +1,9 @@
 <html>
   <head>
+    <title>Log In | Star Island</title>
     <link type="text/css" rel="stylesheet" href="css/app.css">
     <script src="script/jquery.js"></script>
-    <script src="/socket.io/socket.io.js"></script>
     <script>
-      var socket = io.connect('http://140.136.150.87');
-
-      socket.on('auth', function(data) {
-        console.log(data);
-      });
       $(document).ready(function() {
         $('#id').focus();
       });
@@ -17,10 +12,11 @@
   <body>
     <div class="content">
       <form method="post" action="login">
-        <input type="text" name="id" />
-        <input type="password" name="pwd" />
+        <label>ID: <input type="text" name="id" id="id" /></label><br />
+        <label>Password: <input type="password" name="pwd" /></label><br />
         <input type="submit" value="Login" />
       </form>
+      <a href="/sign">Sign Up</a>
     </div>
   </body>
 </html>
