@@ -152,6 +152,7 @@ function frame_rotate(event){	//旋轉
         slave_XY[Mycolor].splice(slave_XY[Mycolor].length-1, 1);
         sla_valX = null;
         sla_valY = null;
+        
       }
   
       cont_3.removeAllChildren();
@@ -163,8 +164,11 @@ function frame_rotate(event){	//旋轉
       bmp_r.rotation=degree; //旋轉
       bmp_rr.rotation=degree;
       //alert(degree);
-      degree+=90;
-      CardsDegree[HowManyCard] = degree-90;
+      CardsDegree[HowManyCard] = degree;
+      degree = (degree + 90) % 360;
+      if(degree==0) {
+        degree=360;
+      }
       cont_temp_slave.removeAllChildren();
 	    judge();
 
@@ -183,10 +187,20 @@ function frame_slave(event){	//小人
   bitmap_UI.x =776;
   bitmap_UI.y =250;
   bitmap_UI.onClick = function(){
-    if(cont.getChildAt(0).visible == false || cont.getChildAt(0) == undefined) {
-      slaveXY();
+    if(cont_temp_slave.children.length != 0) {
+      cont_temp_slave.removeAllChildren();
+      console.log("  NONONONONONNONONONONO  ");
     }
-    if(slaveTF == true) {
+    else if(cont.getChildAt(0).visible == false || cont.getChildAt(0) == undefined) {//卡片已經放入場上
+      cont_temp_slave.x=cont_2.x + cont_2.getChildAt(cont_2.children.length-1).x;
+      cont_temp_slave.y=cont_2.y + cont_2.getChildAt(cont_2.children.length-1).y;
+      console.log(cont_temp_slave.x + "    *****cont_temp_slave.x");
+      console.log(cont_2.x + " cont_2.x//position  " + cont_2.getChildAt(cont_2.children.length-1).x);
+      slaveXY();
+      cont_temp_slave.rotation = CardsDegree[HowManyCard];
+      cont_temp_slave.visible = true;
+    }
+    if(slaveTF == true) {//卡片在場上,且已有擺小人
       cont_slave.removeChildAt(cont_slave.children.length-1);
       slave_XY[Mycolor].splice(slave_XY[Mycolor].length-1, 1);
       console.log(slave_XY[Mycolor] + "************* slave_XY");
@@ -195,8 +209,8 @@ function frame_slave(event){	//小人
       sla_valY = null;
     }
   }
-
-  update = true;
+  createjs.Ticker.addListener(stage);
+    stage.update();
 }
 var zoom = [0.2, 0.4, 0.6, 1, 1.2],
     zoomNo = 3;
@@ -221,6 +235,8 @@ function zoomIn(event){	//地圖放大
   	else{
   		zoomNo--;
   	}
+  	cont_temp_slave.x=cont_2.x + cont_2.getChildAt(cont_2.children.length-1).x;
+      cont_temp_slave.y=cont_2.y + cont_2.getChildAt(cont_2.children.length-1).y;
 	  update = true;
   }
 }
@@ -245,6 +261,8 @@ function zoomOut(event){	//地圖縮小
   	else{
   		zoomNo++;
   	}
+  	cont_temp_slave.x=cont_2.x + cont_2.getChildAt(cont_2.children.length-1).x;
+    cont_temp_slave.y=cont_2.y + cont_2.getChildAt(cont_2.children.length-1).y;
   	update = true;
   }
 }
@@ -321,21 +339,19 @@ function check(event){
 	  xxx = ccc.x; yyy = ccc.y;
 	  ccc.name = "bmp_" + (HowManyCard+1);
 	  
-	  /*if(sla_valX== null) {
-	    slav_valX = n
-	  }*/
 		socket.emit('OK', [ttt, degree-90, (yyy/150)-2+72, (xxx/150)-3+72, slave_color,  sla_valX, sla_valY]);
     //console.log(slave_color + "  UI");
 	  HowManyCard = wtf-1; //場上卡片數量
 	  cont.removeAllChildren();
 	  cont_3.removeAllChildren();
 	    cont_temp_slave.removeAllChildren();
-	  RedNumber=0;wtf_click=0;
+	  RedNumber = 0;  wtf_click = 0;  wtf_slave = 0
 	  cou++;
 	  CardsDegree[HowManyCard-1] = degree-90; //存使用者所旋轉的度數
     TypeOfCard[HowManyCard-1] = ttt;//存使用者所抽到的卡片種類
     mapInfo[(yyy/150)-2+72][(xxx/150)-3+72]=n;
     slaveTF = false;
+    
     createjs.Ticker.addListener(stage);
     stage.update();
 	

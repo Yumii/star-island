@@ -63,17 +63,19 @@
         
         cont_2.onPress = function(evt) {
           var offset = {x:evt.target.x-evt.stageX, y:evt.target.y-evt.stageY};
-        
+         
           evt.onMouseMove = function(ev) {
             ev.target.x = ev.stageX+offset.x;
             ev.target.y = ev.stageY+offset.y;
-          
+            
             cont_3.x = ev.target.x; cont_3.y = ev.target.y;
-            cont_temp_slave.x = ev.target.x; cont_temp_slave.y = ev.target.y;
+            //cont_temp_slave.x = cont_temp_slave.x +offset.x; 
+            //cont_temp_slave.y = cont_temp_slave.y +offset.y;
             cont_slave.x = ev.target.x; cont_slave.y = ev.target.y;
+            cont_temp_slave.x=cont_3.x + cont_2.getChildAt(cont_2.children.length-1).x;
+            cont_temp_slave.y=cont_3.y + cont_2.getChildAt(cont_2.children.length-1).y;
             update = true;
           }
-        
         }
     
         //Staring image
@@ -172,13 +174,13 @@
         bitmap.y=550;
         
         RedNumber=-1;
-        
+        cont_temp_slave.visible = false;
         judge();
         sla_valX = null;
         sla_valY = null;
         //slaveTF = false;
         update = true;
-      }      
+      }
       
       function out() {
         if(cont_temp_slave.children.length==0){
@@ -425,7 +427,7 @@
             RedNumber=0;wtf_click=0;
             cou++;
             CardsDegree[HowManyCard-1] = degree;
-            direction =  (degree)/90;
+            direction =  Math.abs((degree-90)/90);//(degree)/90;
             //console.log(degree-90 + "  DDDD");
             TypeOfCard[HowManyCard-1] = ttt;
             n=ttt;
