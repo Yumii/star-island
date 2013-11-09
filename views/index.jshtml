@@ -23,6 +23,9 @@
       var offset;
       var cardX = new Array(72); //紀錄卡片位置
       var cardY = new Array(72);
+     /* var image_1, image_2, image_3, image_4, image_5, image_6, image_7, image_8, 
+          image_9, image_10, image_11, image_12, image_13, image_14, image_15, image_16, 
+          image_17, image_18, image_19, image_20, image_21, image_22, image_23, image_24;*/
       var TypeOfCard = new Array(72); // 紀錄卡片種類
       var CardsDegree = new Array(72); //紀錄卡片旋轉度數
       var CardNumber = new Array(24); //紀錄每種卡的張數
@@ -60,17 +63,19 @@
         
         cont_2.onPress = function(evt) {
           var offset = {x:evt.target.x-evt.stageX, y:evt.target.y-evt.stageY};
-        
+         
           evt.onMouseMove = function(ev) {
             ev.target.x = ev.stageX+offset.x;
             ev.target.y = ev.stageY+offset.y;
-          
+            
             cont_3.x = ev.target.x; cont_3.y = ev.target.y;
-            cont_temp_slave.x = ev.target.x; cont_temp_slave.y = ev.target.y;
+            //cont_temp_slave.x = cont_temp_slave.x +offset.x; 
+            //cont_temp_slave.y = cont_temp_slave.y +offset.y;
             cont_slave.x = ev.target.x; cont_slave.y = ev.target.y;
+            cont_temp_slave.x=cont_3.x + cont_2.getChildAt(cont_2.children.length-1).x;
+            cont_temp_slave.y=cont_3.y + cont_2.getChildAt(cont_2.children.length-1).y;
             update = true;
           }
-        
         }
     
         //Staring image
@@ -92,7 +97,56 @@
           
           
         }
-        // 42131 12323 21223 53333 8941
+       /* function imageCard() {
+          image_1 = new Image();
+            image_1.src = "assets/1c.png"
+          image_2 = new Image();
+            image_2.src = "assets/2c.png"
+          image_3 = new Image();
+            image_3.src = "assets/3c.png"
+          image_4 = new Image();
+            image_4.src = "assets/4c.png"
+          image_5 = new Image();
+            image_5.src = "assets/5c.png"
+          image_6 = new Image();
+            image_6.src = "assets/6c.png"
+          image_7 = new Image();
+            image_7.src = "assets/7c.png"
+          image_8 = new Image();
+            image_8.src = "assets/8c.png"
+          image_9 = new Image();
+            image_9.src = "assets/9c.png"
+          image_10 = new Image();
+            image_10.src = "assets/10c.png"
+          image_11 = new Image();
+            image_11.src = "assets/11c.png"
+          image_12 = new Image();
+            image_12.src = "assets/12c.png"
+          image_13 = new Image();
+            image_13.src = "assets/13c.png"
+          image_14 = new Image();
+            image_14.src = "assets/14c.png"
+          image_15 = new Image();
+            image_15.src = "assets/15c.png"
+          image_16 = new Image();
+            image_16.src = "assets/16c.png"
+          image_17 = new Image();
+            image_17.src = "assets/17c.png"
+          image_18 = new Image();
+            image_18.src = "assets/18c.png"
+          image_19 = new Image();
+            image_19.src = "assets/19c.png"
+          image_20 = new Image();
+            image_20.src = "assets/20c.png"
+          image_21 = new Image();
+            image_21.src = "assets/21c.png"
+          image_22 = new Image();
+            image_22.src = "assets/22c.png"
+          image_23 = new Image();
+            image_23.src = "assets/23c.png"
+          image_24 = new Image();
+            image_24.src = "assets/24c.png"
+        }*/
       function add() {
         var image = new Image();
         temp = true;
@@ -120,12 +174,13 @@
         bitmap.y=550;
         
         RedNumber=-1;
+        cont_temp_slave.visible = false;
         judge();
         sla_valX = null;
         sla_valY = null;
-        slaveTF = false;
+        //slaveTF = false;
         update = true;
-      }      
+      }
       
       function out() {
         if(cont_temp_slave.children.length==0){
@@ -362,7 +417,7 @@
             RedNumber=0;wtf_click=0;
             cou++;
             CardsDegree[HowManyCard-1] = degree;
-            direction =  (degree)/90;
+            direction =  Math.abs((degree-90)/90);//(degree)/90;
             //console.log(degree-90 + "  DDDD");
             TypeOfCard[HowManyCard-1] = ttt;
             n=ttt;

@@ -182,7 +182,7 @@ var slavePos = [ [-45, -45], [0, -60], [55, -35], [60, 0], [45, 45], [0, 60], [-
 var temp_slave;
 var slave_j;
 function slaveXY() {
-	temp_slave = new Array();
+	/*temp_slave = new Array();
 		rotateNo = (CardsDegree[HowManyCard]/90); //轉幾次
 		var type = TypeOfCard[HowManyCard];
 		for(j=0; j < slaveInfo[type].length; j++){
@@ -205,15 +205,23 @@ function slaveXY() {
 			
 			update = true;
 		}
-	slave_j = temp_slave.length ;
+	slave_j = temp_slave.length ;*/
 	
+	for(i=0; i<slaveInfo[ttt].length; i++) {
+	  var image = new Image();
+			image.src = "assets/redPoint2.png";
+			image.onload = handleImageSlave;
+			
+			update = true;
+	}
+	slave_j = slaveInfo[ttt].length;
 }
 
 	//judge();
 
 	//*判斷可放的位置
 function judge() {
-	direction =  (degree-90)/90;
+	direction =  Math.abs((degree-90)/90);
 	n = ttt;
 	console.log('ttt is ' + ttt + ', n is ' + n + ', degree is ' + degree%360);
 	direction %= 4 ; // 旋轉次數 mod 4
@@ -228,16 +236,12 @@ function judge() {
 				//有卡之位置
 				var uy = k;
 				var ux = l;
-	//			document.write("<br>uy=" +uy+ " ux=" +ux+ " _4");
+				
 				//周遭資訊
 				var up = mapInfo[uy-1][ux];
 				var ri = mapInfo[uy][ux+1];
 				var dw = mapInfo[uy+1][ux];
 				var le = mapInfo[uy][ux-1];
-	//			document.write("<br>cardInfo[" +up+ "]=" +cardInfo[up] +" _5_Up");
-	//			document.write("<br>cardInfo[" +ri+ "]=" +cardInfo[ri] +" _5_Right");
-	//			document.write("<br>cardInfo[" +dw+ "]=" +cardInfo[dw] +" _5_Down");
-	//			document.write("<br>cardInfo[" +le+ "]=" +cardInfo[le] +" _5_Left");
 				
 				//* 下一張卡預計放置位置
 				//上
@@ -282,10 +286,9 @@ function judge() {
 				//左
 				if (le==0){
 					var ny = uy;
-					var nx = ux-1;						
-			//		document.write("<br>ny=" +ny+ " nx=" +nx+ " _6");
+					var nx = ux-1;
 					mapInfo[ny][nx] = n;
-			//		document.write("<br>cardInfo[" +n+ "]=" +cardInfo[n] +" _7");
+					
 					var nup = mapInfo[ny-1][nx];
 					var nri = mapInfo[ny][nx+1];
 					var ndw = mapInfo[ny+1][nx];
