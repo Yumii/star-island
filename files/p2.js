@@ -223,7 +223,7 @@ function slaveXY() {
 function judge() {
 	direction =  Math.abs((degree-90)/90);
 	n = ttt;
-	console.log('ttt is ' + ttt + ', n is ' + n + ', degree is ' + degree%360);
+	console.log('ttt is ' + ttt + ', n is ' + n + ', degree is ' + degree);
 	direction %= 4 ; // 旋轉次數 mod 4
 	n += (24*direction); // 卡片編號 * 24, 可以改最上方的d值作測試
 	

@@ -161,8 +161,8 @@ function frame_rotate(event){	//旋轉
       var bmp_rr = cont.getChildAt(0);
       bmp_rr.visible = true;
       bmp_r.visible = false;
-      bmp_r.rotation=degree; //旋轉
-      bmp_rr.rotation=degree;
+      bmp_r.rotation = degree; //旋轉
+      bmp_rr.rotation = degree;
       //alert(degree);
       CardsDegree[HowManyCard] = degree;
       degree = (degree + 90) % 360;
@@ -170,7 +170,7 @@ function frame_rotate(event){	//旋轉
         degree=360;
       }
       cont_temp_slave.removeAllChildren();
-	    judge();
+      judge();
 
       createjs.Ticker.addListener(stage);
       stage.update();
@@ -192,13 +192,13 @@ function frame_slave(event){	//小人
       console.log("  NONONONONONNONONONONO  ");
     }
     else if(cont.getChildAt(0).visible == false || cont.getChildAt(0) == undefined) {//卡片已經放入場上
-      cont_temp_slave.x=cont_2.x + cont_2.getChildAt(cont_2.children.length-1).x;
+     /* cont_temp_slave.x=cont_2.x + cont_2.getChildAt(cont_2.children.length-1).x;
       cont_temp_slave.y=cont_2.y + cont_2.getChildAt(cont_2.children.length-1).y;
       console.log(cont_temp_slave.x + "    *****cont_temp_slave.x");
-      console.log(cont_2.x + " cont_2.x//position  " + cont_2.getChildAt(cont_2.children.length-1).x);
+      console.log(cont_2.x + " cont_2.x//position  " + cont_2.getChildAt(cont_2.children.length-1).x);*/
       slaveXY();
-      cont_temp_slave.rotation = CardsDegree[HowManyCard];
-      cont_temp_slave.visible = true;
+     /* cont_temp_slave.rotation = CardsDegree[HowManyCard];
+      cont_temp_slave.visible = true;*/
     }
     if(slaveTF == true) {//卡片在場上,且已有擺小人
       cont_slave.removeChildAt(cont_slave.children.length-1);
@@ -235,8 +235,7 @@ function zoomIn(event){	//地圖放大
   	else{
   		zoomNo--;
   	}
-  	cont_temp_slave.x=cont_2.x + cont_2.getChildAt(cont_2.children.length-1).x;
-      cont_temp_slave.y=cont_2.y + cont_2.getChildAt(cont_2.children.length-1).y;
+  	
 	  update = true;
   }
 }
@@ -250,7 +249,7 @@ function zoomOut(event){	//地圖縮小
   bitmap_UI.x =880;
   bitmap_UI.y =190;
 
-  bitmap_UI.onClick = function(){   
+  bitmap_UI.onClick = function(){
   	zoomNo--;
   	if(zoomNo>=0){
 	    cont_3.scaleX = cont_3.scaleY = cont_3.scale = zoom[zoomNo];
@@ -261,9 +260,8 @@ function zoomOut(event){	//地圖縮小
   	else{
   		zoomNo++;
   	}
-  	cont_temp_slave.x=cont_2.x + cont_2.getChildAt(cont_2.children.length-1).x;
-    cont_temp_slave.y=cont_2.y + cont_2.getChildAt(cont_2.children.length-1).y;
-  	update = true;
+    	
+    	update = true;
   }
 }
 function UI_player1(event){

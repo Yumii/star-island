@@ -70,7 +70,7 @@ function handleImageRed(event) {
         slave_XY[Mycolor].splice(slave_XY[Mycolor].length-1, 1);
         sla_valX = null;
         sla_valY = null;
-        cont_temp_slave.visible = false;
+        //cont_temp_slave.visible = false;
       }
       else {
         cont_slave.removeChildAt(cont_slave.children.length);
@@ -105,9 +105,128 @@ function handleImageSlave(event) {
     //bitmap.x = slavePos[temp_slave[slave_j]-1][0] + cardX[HowManyCard];
     //bitmap.y = slavePos[temp_slave[slave_j]-1][1] + cardY[HowManyCard];
     console.log(slaveInfo[ttt][slave_j] + " // " + slavePos[slaveInfo[ttt][slave_j]-1]);
-    bitmap.x = slavePos[slaveInfo[ttt][slave_j]-1][0];
-    bitmap.y = slavePos[slaveInfo[ttt][slave_j]-1][1];
-
+    bitmap.x = slavePos[slaveInfo[ttt][slave_j]-1][0] + cont_2.getChildAt(cont_2.children.length-1).x;
+    bitmap.y = slavePos[slaveInfo[ttt][slave_j]-1][1] + cont_2.getChildAt(cont_2.children.length-1).y;
+      if(slavePos[slaveInfo[ttt][slave_j]-1][0] == 0 && slavePos[slaveInfo[ttt][slave_j]-1][1] == 0) {
+        bitmap.x = slavePos[slaveInfo[ttt][slave_j]-1][0] + cont_2.getChildAt(cont_2.children.length-1).x;
+        bitmap.y = slavePos[slaveInfo[ttt][slave_j]-1][1] + cont_2.getChildAt(cont_2.children.length-1).y;
+      }
+      else if(slavePos[slaveInfo[ttt][slave_j]-1][0] == 0 || slavePos[slaveInfo[ttt][slave_j]-1][1] == 0) {
+        if(CardsDegree[HowManyCard] == 0 || CardsDegree[HowManyCard] == 360) {
+          bitmap.x = slavePos[slaveInfo[ttt][slave_j]-1][0] + cont_2.getChildAt(cont_2.children.length-1).x;
+          bitmap.y = slavePos[slaveInfo[ttt][slave_j]-1][1] + cont_2.getChildAt(cont_2.children.length-1).y;
+        }
+        else if(CardsDegree[HowManyCard] == 90) {
+          temp = quadrant(slavePos[slaveInfo[ttt][slave_j]-1][0], slavePos[slaveInfo[ttt][slave_j]-1][1]);
+          switch(temp){
+            case 0:
+              bitmap.x = slavePos[slaveInfo[ttt][slave_j]-1][1] + cont_2.getChildAt(cont_2.children.length-1).x;
+              bitmap.y = slavePos[slaveInfo[ttt][slave_j]-1][0] + cont_2.getChildAt(cont_2.children.length-1).y;
+              break;
+            case 1:
+              bitmap.x = slavePos[slaveInfo[ttt][slave_j]-1][1] * (-1) + cont_2.getChildAt(cont_2.children.length-1).x;
+              bitmap.y = slavePos[slaveInfo[ttt][slave_j]-1][0] + cont_2.getChildAt(cont_2.children.length-1).y;
+              break;
+            case 2:
+              bitmap.x = slavePos[slaveInfo[ttt][slave_j]-1][1] + cont_2.getChildAt(cont_2.children.length-1).x;
+              bitmap.y = slavePos[slaveInfo[ttt][slave_j]-1][0] + cont_2.getChildAt(cont_2.children.length-1).y;
+              break;
+            case 3:
+              bitmap.x = slavePos[slaveInfo[ttt][slave_j]-1][1] * (-1) + cont_2.getChildAt(cont_2.children.length-1).x;
+              bitmap.y = slavePos[slaveInfo[ttt][slave_j]-1][0] + cont_2.getChildAt(cont_2.children.length-1).y;
+              break;
+            default:
+              console.log("NO slaveXY");
+              break;
+          }
+        }
+        else if(CardsDegree[HowManyCard] == 180) {
+          bitmap.x = slavePos[slaveInfo[ttt][slave_j]-1][0] * (-1) + cont_2.getChildAt(cont_2.children.length-1).x;
+          bitmap.y = slavePos[slaveInfo[ttt][slave_j]-1][1] * (-1) + cont_2.getChildAt(cont_2.children.length-1).y;
+        }
+        else {
+          temp = quadrant(slavePos[slaveInfo[ttt][slave_j]-1][0], slavePos[slaveInfo[ttt][slave_j]-1][1]);
+          switch(temp){
+            case 0:
+              bitmap.x = slavePos[slaveInfo[ttt][slave_j]-1][1] + cont_2.getChildAt(cont_2.children.length-1).x;
+              bitmap.y = slavePos[slaveInfo[ttt][slave_j]-1][0] * (-1) + cont_2.getChildAt(cont_2.children.length-1).y;
+              break;
+            case 1:
+              bitmap.x = slavePos[slaveInfo[ttt][slave_j]-1][1] + cont_2.getChildAt(cont_2.children.length-1).x;
+              bitmap.y = slavePos[slaveInfo[ttt][slave_j]-1][0] + cont_2.getChildAt(cont_2.children.length-1).y;
+              break;
+            case 2:
+              bitmap.x = slavePos[slaveInfo[ttt][slave_j]-1][1] + cont_2.getChildAt(cont_2.children.length-1).x;
+              bitmap.y = slavePos[slaveInfo[ttt][slave_j]-1][0] * (-1) + cont_2.getChildAt(cont_2.children.length-1).y;
+              break;
+            case 3:
+              bitmap.x = slavePos[slaveInfo[ttt][slave_j]-1][1] + cont_2.getChildAt(cont_2.children.length-1).x;
+              bitmap.y = slavePos[slaveInfo[ttt][slave_j]-1][0] + cont_2.getChildAt(cont_2.children.length-1).y;
+              break;
+            default:
+              console.log("NO slaveXY");
+              break;
+          }
+        }
+      }
+      else {
+        if(CardsDegree[HowManyCard] == 0 || CardsDegree[HowManyCard] == 360) {
+          bitmap.x = slavePos[slaveInfo[ttt][slave_j]-1][0] + cont_2.getChildAt(cont_2.children.length-1).x;
+          bitmap.y = slavePos[slaveInfo[ttt][slave_j]-1][1] + cont_2.getChildAt(cont_2.children.length-1).y;
+        }
+        else if(CardsDegree[HowManyCard] == 90) {
+          temp = quadrant(slavePos[slaveInfo[ttt][slave_j]-1][0], slavePos[slaveInfo[ttt][slave_j]-1][1]);
+          switch(temp){
+            case 0:
+              bitmap.x = slavePos[slaveInfo[ttt][slave_j]-1][0] * (-1) + cont_2.getChildAt(cont_2.children.length-1).x;
+              bitmap.y = slavePos[slaveInfo[ttt][slave_j]-1][1] + cont_2.getChildAt(cont_2.children.length-1).y;
+              break;
+            case 1:
+              bitmap.x = slavePos[slaveInfo[ttt][slave_j]-1][0] + cont_2.getChildAt(cont_2.children.length-1).x;
+              bitmap.y = slavePos[slaveInfo[ttt][slave_j]-1][1] * (-1) + cont_2.getChildAt(cont_2.children.length-1).y;
+              break;
+            case 2:
+              bitmap.x = slavePos[slaveInfo[ttt][slave_j]-1][0] * (-1) + cont_2.getChildAt(cont_2.children.length-1).x;
+              bitmap.y = slavePos[slaveInfo[ttt][slave_j]-1][1] + cont_2.getChildAt(cont_2.children.length-1).y;
+              break;
+            case 3:
+              bitmap.x = slavePos[slaveInfo[ttt][slave_j]-1][0] + cont_2.getChildAt(cont_2.children.length-1).x;
+              bitmap.y = slavePos[slaveInfo[ttt][slave_j]-1][1] * (-1) + cont_2.getChildAt(cont_2.children.length-1).y;
+              break;
+            default:
+              console.log("NO slaveXY");
+              break;
+          }
+        }
+        else if(CardsDegree[HowManyCard] == 180) {
+          bitmap.x = slavePos[slaveInfo[ttt][slave_j]-1][0] * (-1) + cont_2.getChildAt(cont_2.children.length-1).x;
+          bitmap.y = slavePos[slaveInfo[ttt][slave_j]-1][1] * (-1) + cont_2.getChildAt(cont_2.children.length-1).y;
+        }
+        else{
+          temp = quadrant(slavePos[slaveInfo[ttt][slave_j]-1][0], slavePos[slaveInfo[ttt][slave_j]-1][1]);
+          switch(temp){
+            case 0:
+              bitmap.x = slavePos[slaveInfo[ttt][slave_j]-1][0] + cont_2.getChildAt(cont_2.children.length-1).x;
+              bitmap.y = slavePos[slaveInfo[ttt][slave_j]-1][1] * (-1) + cont_2.getChildAt(cont_2.children.length-1).y;
+              break;
+            case 1:
+              bitmap.x = slavePos[slaveInfo[ttt][slave_j]-1][0] * (-1) + cont_2.getChildAt(cont_2.children.length-1).x;
+              bitmap.y = slavePos[slaveInfo[ttt][slave_j]-1][1] + cont_2.getChildAt(cont_2.children.length-1).y;
+              break;
+            case 2:
+              bitmap.x = slavePos[slaveInfo[ttt][slave_j]-1][0] + cont_2.getChildAt(cont_2.children.length-1).x;
+              bitmap.y = slavePos[slaveInfo[ttt][slave_j]-1][1] * (-1) + cont_2.getChildAt(cont_2.children.length-1).y;
+              break;
+            case 3:
+              bitmap.x = slavePos[slaveInfo[ttt][slave_j]-1][0] * (-1) + cont_2.getChildAt(cont_2.children.length-1).x;
+              bitmap.y = slavePos[slaveInfo[ttt][slave_j]-1][1] + cont_2.getChildAt(cont_2.children.length-1).y;
+              break;
+            default:
+              console.log("NO slaveXY");
+              break;
+          }
+        }
+      }
   bitmap.regX = bitmap.image.width/2|0;
   bitmap.regY = bitmap.image.height/2|0;
   bitmap.scaleX = bitmap.scaleY = bitmap.scale = 0.5;
@@ -131,128 +250,10 @@ function handleImageSlave(event) {
       bitmap_s.regY = 200;
       //bitmap_s.x = sla_valX = bitmap.x + cont_2.getChildAt(cont_2.children.length-1).x;
       //bitmap_s.y = sla_valY = bitmap.y + cont_2.getChildAt(cont_2.children.length-1).y;
-      if(bitmap.x == 0 && bitmap.y == 0) {
-        bitmap_s.x = bitmap.x + cont_2.getChildAt(cont_2.children.length-1).x;
-        bitmap_s.y = bitmap.y + cont_2.getChildAt(cont_2.children.length-1).y;
-      }
-      else if(bitmap.x == 0 || bitmap.y == 0) {
-        if(CardsDegree[HowManyCard] == 0 || CardsDegree[HowManyCard] == 360) {
-          bitmap_s.x = bitmap.x + cont_2.getChildAt(cont_2.children.length-1).x;
-          bitmap_s.y = bitmap.y + cont_2.getChildAt(cont_2.children.length-1).y;
-        }
-        else if(CardsDegree[HowManyCard] == 90) {
-          temp = quadrant(bitmap.x, bitmap.y);
-          switch(temp){
-            case 0:
-              bitmap_s.x = bitmap.y + cont_2.getChildAt(cont_2.children.length-1).x;
-              bitmap_s.y = bitmap.x + cont_2.getChildAt(cont_2.children.length-1).y;
-              break;
-            case 1:
-              bitmap_s.x = bitmap.y * (-1) + cont_2.getChildAt(cont_2.children.length-1).x;
-              bitmap_s.y = bitmap.x + cont_2.getChildAt(cont_2.children.length-1).y;
-              break;
-            case 2:
-              bitmap_s.x = bitmap.y + cont_2.getChildAt(cont_2.children.length-1).x;
-              bitmap_s.y = bitmap.x + cont_2.getChildAt(cont_2.children.length-1).y;
-              break;
-            case 3:
-              bitmap_s.x = bitmap.y * (-1) + cont_2.getChildAt(cont_2.children.length-1).x;
-              bitmap_s.y = bitmap.x + cont_2.getChildAt(cont_2.children.length-1).y;
-              break;
-            default:
-              console.log("NO slaveXY");
-              break;
-          }
-        }
-        else if(CardsDegree[HowManyCard] == 180) {
-          bitmap_s.x = bitmap.x * (-1) + cont_2.getChildAt(cont_2.children.length-1).x;
-          bitmap_s.y = bitmap.y * (-1) + cont_2.getChildAt(cont_2.children.length-1).y;
-        }
-        else {
-          temp = quadrant(bitmap.x, bitmap.y);
-          switch(temp){
-            case 0:
-              bitmap_s.x = bitmap.y + cont_2.getChildAt(cont_2.children.length-1).x;
-              bitmap_s.y = bitmap.x * (-1) + cont_2.getChildAt(cont_2.children.length-1).y;
-              break;
-            case 1:
-              bitmap_s.x = bitmap.y + cont_2.getChildAt(cont_2.children.length-1).x;
-              bitmap_s.y = bitmap.x + cont_2.getChildAt(cont_2.children.length-1).y;
-              break;
-            case 2:
-              bitmap_s.x = bitmap.y + cont_2.getChildAt(cont_2.children.length-1).x;
-              bitmap_s.y = bitmap.x * (-1) + cont_2.getChildAt(cont_2.children.length-1).y;
-              break;
-            case 3:
-              bitmap_s.x = bitmap.y + cont_2.getChildAt(cont_2.children.length-1).x;
-              bitmap_s.y = bitmap.x + cont_2.getChildAt(cont_2.children.length-1).y;
-              break;
-            default:
-              console.log("NO slaveXY");
-              break;
-          }
-        }
-      }
-      else {
-        if(CardsDegree[HowManyCard] == 0 || CardsDegree[HowManyCard] == 360) {
-          bitmap_s.x = bitmap.x + cont_2.getChildAt(cont_2.children.length-1).x;
-          bitmap_s.y = bitmap.y + cont_2.getChildAt(cont_2.children.length-1).y;
-        }
-        else if(CardsDegree[HowManyCard] == 90) {
-          temp = quadrant(bitmap.x, bitmap.y);
-          switch(temp){
-            case 0:
-              bitmap_s.x = bitmap.x * (-1) + cont_2.getChildAt(cont_2.children.length-1).x;
-              bitmap_s.y = bitmap.y + cont_2.getChildAt(cont_2.children.length-1).y;
-              break;
-            case 1:
-              bitmap_s.x = bitmap.x + cont_2.getChildAt(cont_2.children.length-1).x;
-              bitmap_s.y = bitmap.y * (-1) + cont_2.getChildAt(cont_2.children.length-1).y;
-              break;
-            case 2:
-              bitmap_s.x = bitmap.x * (-1) + cont_2.getChildAt(cont_2.children.length-1).x;
-              bitmap_s.y = bitmap.y + cont_2.getChildAt(cont_2.children.length-1).y;
-              break;
-            case 3:
-              bitmap_s.x = bitmap.x + cont_2.getChildAt(cont_2.children.length-1).x;
-              bitmap_s.y = bitmap.y * (-1) + cont_2.getChildAt(cont_2.children.length-1).y;
-              break;
-            default:
-              console.log("NO slaveXY");
-              break;
-          }
-        }
-        else if(CardsDegree[HowManyCard] == 180) {
-          bitmap_s.x = bitmap.x * (-1) + cont_2.getChildAt(cont_2.children.length-1).x;
-          bitmap_s.y = bitmap.y * (-1) + cont_2.getChildAt(cont_2.children.length-1).y;
-        }
-        else{
-          temp = quadrant(bitmap.x, bitmap.y);
-          switch(temp){
-            case 0:
-              bitmap_s.x = bitmap.x + cont_2.getChildAt(cont_2.children.length-1).x;
-              bitmap_s.y = bitmap.y * (-1) + cont_2.getChildAt(cont_2.children.length-1).y;
-              break;
-            case 1:
-              bitmap_s.x = bitmap.x * (-1) + cont_2.getChildAt(cont_2.children.length-1).x;
-              bitmap_s.y = bitmap.y + cont_2.getChildAt(cont_2.children.length-1).y;
-              break;
-            case 2:
-              bitmap_s.x = bitmap.x + cont_2.getChildAt(cont_2.children.length-1).x;
-              bitmap_s.y = bitmap.y * (-1) + cont_2.getChildAt(cont_2.children.length-1).y;
-              break;
-            case 3:
-              bitmap_s.x = bitmap.x * (-1) + cont_2.getChildAt(cont_2.children.length-1).x;
-              bitmap_s.y = bitmap.y + cont_2.getChildAt(cont_2.children.length-1).y;
-              break;
-            default:
-              console.log("NO slaveXY");
-              break;
-          }
-        }
-      }
-      sla_valX = bitmap_s.x;
-      sla_valY = bitmap_s.y;
+      
+      
+      sla_valX = bitmap_s.x = bitmap.x;
+      sla_valY = bitmap_s.y = bitmap.y;
       bitmap_s.scaleX = bitmap_s.scaleY = bitmap_s.scale = 0.15;
       slaveTF = true;
       cont_temp_slave.removeAllChildren();
