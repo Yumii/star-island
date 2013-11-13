@@ -182,31 +182,6 @@ var slavePos = [ [-45, -45], [0, -60], [55, -35], [60, 0], [45, 45], [0, 60], [-
 var temp_slave;
 var slave_j;
 function slaveXY() {
-	/*temp_slave = new Array();
-		rotateNo = (CardsDegree[HowManyCard]/90); //轉幾次
-		var type = TypeOfCard[HowManyCard];
-		for(j=0; j < slaveInfo[type].length; j++){
-		  temp = (slaveInfo[type][j] + (rotateNo * 2));
-		  if(temp == 8) {
-				temp_slave[j] = 8;
-				}
-			else if(slaveInfo[type][j] != 9){
-				temp_slave[j] = temp % 8;
-			}
-			else{
-				temp_slave[j] = 9;
-			}
-		}
-		for(slave_j=0; slave_j< temp_slave.length; slave_j++){
-			
-			var image = new Image();
-			image.src = "assets/redPoint2.png";
-			image.onload = handleImageSlave;
-			
-			update = true;
-		}
-	slave_j = temp_slave.length ;*/
-	
 	for(i=0; i<slaveInfo[ttt].length; i++) {
 	  var image = new Image();
 			image.src = "assets/redPoint2.png";
@@ -294,11 +269,6 @@ function judge() {
 					var ndw = mapInfo[ny+1][nx];
 					var nle = mapInfo[ny][nx-1];
 
-			//		document.write("<br>cardInfo[" +nup+ "]=" +cardInfo[nup] +" _8_Up");
-			//		document.write("<br>cardInfo[" +nri+ "]=" +cardInfo[nri] +" _8_nRight");
-			//		document.write("<br>cardInfo[" +ndw+ "]=" +cardInfo[ndw] +" _8_nDown");
-			//		document.write("<br>cardInfo[" +nle+ "]=" +cardInfo[nle] +" _8_Left");
-
 					judgeOK(nup, nri, ndw, nle, ny, nx);					 
 				} // if le=0
 				//*/
@@ -327,8 +297,6 @@ function judgeOK(nup, nri, ndw, nle, ny, nx) {
   }
 	//四邊是否都符合
 	if(countOK == 4){
-		//console.log("(x,y)=" + "("+(nx-72+3)*150 + "," + (ny-72+2)*150 + ")");
-		//alert("Yes");
 		RedNumber++;
 		RedRangeX[RedNumber] = (nx-72+3)*150 ;
 		RedRangeY[RedNumber] = (ny-72+2)*150;
@@ -336,19 +304,363 @@ function judgeOK(nup, nri, ndw, nle, ny, nx) {
 		var ii = new Image();
 		ii.src = "assets/ImageRed.png"
 		ii.onload = handleImageRed;
-//		document.write("<br>cardInfo[" +ny+ "][" +nx+ "] OK!!! _9_nOK ");
+		
 	}
 	else {
-		/*console.log(cardInfo[nup][2]+nup+" == "+cardInfo[n][0] + "  /  "+
-		cardInfo[nri][3] +nri+" == "+cardInfo[n][1] + "  /  "+
-		cardInfo[ndw][0] +ndw+" == "+ cardInfo[n][2] + "  /  "+
-		cardInfo[nle][1] +nle+"=="+ cardInfo[n][3]+"  ;  ");
-		console.log("[ "+ny+" ] [ "+nx+" ]");*/
-		//alert("NO");
-//		document.write("<br>countOK = " +countOK+ " NO!!! _9_nNO ");
 	}
 
 
 	mapInfo[ny][nx] = 0;
 
 } // judgeOK()
+
+
+  var countRoadEnd = 0;
+	var countRoad = 0;
+	var roadScore = 0;
+	var scoreInfo = new Array(5);
+	for(k=0;k<4;k++){
+		scoreInfo[k] = 0;
+	}
+
+	var score_recordInfo = new Array(143); // y
+	for(k=0;k<143;k++){
+		score_recordInfo[k] = new Array(143); // x
+			for(l=0;l<143;l++){
+				score_recordInfo[k][l] = new Array(4); // [slave, road, land, church]
+					for(m=0;m<4;m++){
+						score_recordInfo[k][l][m] = 0;
+					}
+			}
+	}
+	
+	var roadInfo = new Array(143);
+	for(k=0;k<143;k++){
+		roadInfo[k] = new Array(143);
+		for(l=0;l<143;l++){
+			roadInfo[k][l] = 0;
+		}
+	}
+	var countSlave = 0;
+	var slave_y = 0;
+	var slave_x = 0;
+	var slave_y_pre = 0;
+	var slave_x_pre = 0;
+	var now_y=0;
+	var now_x=0;
+	var now_cardNO;// = mapInfo[now_y][now_x];
+	var s ;//= score_recordInfo[slave_y][slave_x][0]%10;
+
+	function score_road(now_y, now_x){
+		
+		now_cardNO = mapInfo[now_y][now_x];
+		s = score_recordInfo[slave_y][slave_x][0]%10;
+		
+		//尚未有完整的路
+		if(score_recordInfo[now_y][now_x][1]==0){
+			//document.write("<br>" +now_y+ "," +now_x+"...0");
+			//score_road(now_y, now_x);
+			roadInfo[now_y][now_x] = 1;
+			countRoad += 1;
+			//document.write("<br>" +now_y+ "," +now_x+ "->" +now_cardNO+ "...1f");
+		
+		
+			//document.write("<br>" +now_y+ "," +now_x+ "->" +now_cardNO+ "...1");
+			
+			//紀錄終點
+			if(now_cardNO%24==2 || now_cardNO%24==6 || now_cardNO%24==7
+				|| now_cardNO%24==19 || now_cardNO%24==23 || now_cardNO%24==0){
+				//19,23,24有多條路,需再更改判斷-->OK
+				countRoadEnd += 1;
+				//document.write("<br>" +now_y+ "," +now_x+ "->" +now_cardNO+ "...1end");
+			}
+			
+			///兩個終點 ==> 完整的路
+			if (countRoadEnd == 2){
+				//countRoad += 1;
+				//document.write("<br>Completed !!!  countRoad = " +countRoad);
+				countRoadEnd=0;	
+				//countRoad=0;			
+				
+				score_color();
+				return;
+			}
+			
+			//如果此位置有小人
+			if(score_recordInfo[now_y][now_x][0]!=0){
+				countSlave += 1;
+				slave_y_pre = slave_y;
+				slave_x_pre = slave_x;
+				slave_y = now_y;
+				slave_x = now_x;
+				s = score_recordInfo[slave_y][slave_x][0]%10;
+				//document.write("<br>" +slave_y+ "," +slave_x+ "->" +now_cardNO+ "s" +s+"...1s");
+				//document.write("<br>" +score_recordInfo[slave_y][slave_x][0]+ 
+				//			"," +score_recordInfo[slave_y][slave_x][0]%10+ 
+				//			"->" +now_cardNO+ "s" +s+"...1s");
+					
+			
+				if(s==2){
+					if(now_cardNO%24==0){
+				
+				//	document.write("<br>In s=2...1s");
+						if(parseInt((now_cardNO-1)/24)==0){
+							if(mapInfo[now_y-1][now_x]!=0 && cardInfo[now_cardNO][0]=="road"
+							 && roadInfo[now_y-1][now_x]==0){
+								score_road(now_y-1, now_x);
+							}
+						}
+						else if(parseInt((road_cardNO-1)/24)==1){
+							if(mapInfo[now_y][now_x+1]!=0 && cardInfo[now_cardNO][1]=="road"
+							 && roadInfo[now_y][now_x+1]==0){
+								score_road(now_y, now_x+1);
+							}
+						}
+						else if(parseInt((road_cardNO-1)/24)==2){
+							if(mapInfo[now_y+1][now_x]!=0 && cardInfo[now_cardNO][2]=="road"
+							 && roadInfo[now_y+1][now_x]==0){
+								score_road(now_y+1, now_x);
+							}
+						}
+						else if(parseInt((road_cardNO-1)/24)==3){
+							if(mapInfo[now_y][now_x-1]!=0 && cardInfo[now_cardNO][3]=="road"
+							 && roadInfo[now_y][now_x-1]==0){
+								score_road(now_y, now_x-1);
+							}
+						}
+						else{
+						//	document.write("<br>" +now_y+ "," +now_y+"...else");
+							return;
+						}
+			
+					}
+				}//2
+			
+				if(s==4){
+					if(now_cardNO%19==0 || now_cardNO%23==0 || now_cardNO%24==0){
+						
+						if(parseInt((now_cardNO-1)/24)==0){
+							if(mapInfo[now_y][now_x+1]!=0 && cardInfo[now_cardNO][1]=="road"
+							 && roadInfo[now_y][now_x+1]==0){
+								score_road(now_y, now_x+1);
+							}
+						}
+						else if(parseInt((road_cardNO-1)/24)==1){
+							if(mapInfo[now_y+1][now_x]!=0 && cardInfo[now_cardNO][2]=="road"
+							 && roadInfo[now_y+1][now_x]==0){
+								score_road(now_y+1, now_x);
+							}
+						}
+						else if(parseInt((road_cardNO-1)/24)==2){
+							if(mapInfo[now_y][now_x-1]!=0 && cardInfo[now_cardNO][3]=="road"
+							 && roadInfo[now_y][now_x-1]==0){
+								score_road(now_y, now_x-1);
+							}
+						}
+						else if(parseInt((road_cardNO-1)/24)==3){
+							if(mapInfo[now_y-1][now_x]!=0 && cardInfo[now_cardNO][0]=="road"
+							 && roadInfo[now_y-1][now_x]==0){
+								score_road(now_y-1, now_x);
+							}
+						}
+						else{
+						//	document.write("<br>" +now_y+ "," +now_y+"...else");
+							return;
+						}
+			
+					}
+				}//4
+			
+				if(s==6){
+					if(now_cardNO%19==0 || now_cardNO%23==0 || now_cardNO%24==0){
+					
+					//	document.write("<br>In s=6...1s");
+						if(parseInt((now_cardNO-1)/24)==0){
+							if(mapInfo[now_y+1][now_x]!=0 && cardInfo[now_cardNO][2]=="road"
+							 && roadInfo[now_y+1][now_x]==0){
+								score_road(now_y+1, now_x);
+							}
+						}
+						else if(parseInt((road_cardNO-1)/24)==1){
+							if(mapInfo[now_y][now_x-1]!=0 && cardInfo[now_cardNO][3]=="road"
+							 && roadInfo[now_y][now_x-1]==0){
+								score_road(now_y, now_x-1);
+							}
+						}
+						else if(parseInt((road_cardNO-1)/24)==2){
+							if(mapInfo[now_y-1][now_x]!=0 && cardInfo[now_cardNO][0]=="road"
+							 && roadInfo[now_y-1][now_x]==0){
+								score_road(now_y-1, now_x);
+							}
+						}
+						else if(parseInt((road_cardNO-1)/24)==3){
+							if(mapInfo[now_y][now_x+1]!=0 && cardInfo[now_cardNO][1]=="road"
+							 && roadInfo[now_y][now_x+1]==0){
+								score_road(now_y, now_x+1);
+							}
+						}
+						else{
+						//	document.write("<br>" +now_y+ "," +now_y+"...else");
+							return;
+						}
+			
+					}
+				}//6
+			
+				if(s==8){
+					if(now_cardNO%19==0 || now_cardNO%23==0 || now_cardNO%24==0){	
+				
+				//		document.write("<br>In s=8...1s");
+						if(parseInt((now_cardNO-1)/24)==0){
+							if(mapInfo[now_y][now_x-1]!=0 && cardInfo[now_cardNO][3]=="road"
+							 && roadInfo[now_y][now_x-1]==0){
+								score_road(now_y, now_x-1);
+							}
+						}
+						else if(parseInt((road_cardNO-1)/24)==1){
+							if(mapInfo[now_y-1][now_x]!=0 && cardInfo[now_cardNO][0]=="road"
+							 && roadInfo[now_y-1][now_x]==0){
+								score_road(now_y-1, now_x);
+							}
+						}
+						else if(parseInt((road_cardNO-1)/24)==2){
+							if(mapInfo[now_y][now_x+1]!=0 && cardInfo[now_cardNO][1]=="road"
+							 && roadInfo[now_y][now_x+1]==0){
+								score_road(now_y, now_x+1);
+							}
+						}
+						else if(parseInt((road_cardNO-1)/24)==3){
+							if(mapInfo[now_y+1][now_x]!=0 && cardInfo[now_cardNO][2]=="road"
+							 && roadInfo[now_y+1][now_x]==0){
+								score_road(now_y+1, now_x);
+							}
+						}
+						else{
+					//		document.write("<br>" +now_y+ "," +now_y+"...else");
+							return;
+						}
+						
+						
+			
+					}
+				}//8
+				
+				if(now_cardNO%10==0 || now_cardNO%11==0 || now_cardNO%18==0){
+					if(s!=4){
+						countSlave -= 1;
+						slave_y = slave_y_pre;
+						slave_x = slave_x_pre;
+					}
+				}
+				else if(now_cardNO%2==0 || now_cardNO%6==0 || now_cardNO%7==0 || now_cardNO%17==0){
+					if(s!=6){
+						countSlave -= 1;
+						slave_y = slave_y_pre;
+						slave_x = slave_x_pre;
+					}
+				}
+				else if(now_cardNO%20==0){
+					if(s!=8){
+						countSlave -= 1;
+						slave_y = slave_y_pre;
+						slave_x = slave_x_pre;
+					}
+				}
+				
+				else if(now_cardNO%21==0 || now_cardNO%22==0){
+					if(s!=9){
+					countSlave -= 1;
+					slave_y = slave_y_pre;
+					slave_x = slave_x_pre;
+					}
+		
+				}
+				
+				if(countSlave>=2){
+				//	document.write("<br>" +slave_y_pre+ "," +slave_x_pre+"had...s");
+				//	document.write("<br>" +slave_y+ "," +slave_x+"no...s");
+				consloe.log (slave_y_pre+ "," +slave_x_pre+"had...s");
+				consloe.log (slave_y+ "," +slave_x+"no...s");
+				countSlave = 0;
+					return;
+				}
+				
+			}
+		
+			
+		
+			if(mapInfo[now_y-1][now_x]!=0 && cardInfo[now_cardNO][0]=="road"
+			 && roadInfo[now_y-1][now_x]==0){
+			//	document.write("<br>" +now_y+ "," +now_x+"...00");
+				score_road(now_y-1, now_x);
+			}
+			if(mapInfo[now_y][now_x+1]!=0 && cardInfo[now_cardNO][1]=="road"
+			 && roadInfo[now_y][now_x+1]==0){
+			//	document.write("<br>" +now_y+ "," +now_x+"...01");
+				score_road(now_y, now_x+1);
+			}
+			if(mapInfo[now_y+1][now_x]!=0 && cardInfo[now_cardNO][2]=="road"
+			 && roadInfo[now_y+1][now_x]==0){
+			//	document.write("<br>" +now_y+ "," +now_x+"...02");
+				score_road(now_y+1, now_x);
+			}
+			if(mapInfo[now_y][now_x-1]!=0 && cardInfo[now_cardNO][3]=="road"
+			 && roadInfo[now_y][now_x-1]==0){
+			//	document.write("<br>" +now_y+ "," +now_y+"...03");
+				score_road(now_y, now_x-1);
+			}
+		
+		else{
+		//	document.write("<br>" +now_y+ "," +now_y+"...else");
+			//*
+			for(k=0;k<143;k++){
+					for(l=0;l<143;l++){
+						roadInfo[k][l] = 0;
+					}
+				}
+			//*/
+			countRoad = 0;
+			return;
+		}
+			//
+		
+	
+		
+			
+		
+	
+		
+		
+		
+		}
+	}//function
+	
+	
+	
+	
+	function score_color(){
+		if(parseInt(score_recordInfo[slave_y][slave_x][0]/10)==0){
+			scoreInfo[0] += countRoad; 
+		//	document.write("<br>Completed !!!  score_BLUE = " +scoreInfo[0]);
+		}
+		else if(parseInt(score_recordInfo[slave_y][slave_x][0]/10)==1){
+			scoreInfo[1] += countRoad; 
+	//		document.write("<br>Completed !!!  score_GREY = " +scoreInfo[1]);
+		}
+		else if(parseInt(score_recordInfo[slave_y][slave_x][0]/10)==2){
+			scoreInfo[2] += countRoad; 
+		//	document.write("<br>Completed !!!  score_GREEN = " +scoreInfo[2]);
+		}
+		else if(parseInt(score_recordInfo[slave_y][slave_x][0]/10)==3){
+			scoreInfo[3] += countRoad; 
+		//	document.write("<br>Completed !!!  score_RED = " +scoreInfo[3]);
+		}
+		else if(parseInt(score_recordInfo[slave_y][slave_x][0]/10)==4){
+			scoreInfo[4] += countRoad; 
+	//	document.write("<br>Completed !!!  score_YELLOW = " +scoreInfo[4]);
+		}
+		countRoad = 0;
+		//score_recordInfo[k][l][0]
+		//return false;
+		//return false;
+	}

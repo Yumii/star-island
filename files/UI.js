@@ -61,7 +61,12 @@ function LoadUI(){
   var OK = new Image();
   OK.src = "assets/check.png"
   OK.onload = check;
+  
+  var trash = new Image();
+  trash.src = "assets/garbage.png"
+  trash.onload = garbage;
   update = true;
+  
   	
 }
 function frame(event){
@@ -152,7 +157,7 @@ function frame_rotate(event){	//旋轉
         slave_XY[Mycolor].splice(slave_XY[Mycolor].length-1, 1);
         sla_valX = null;
         sla_valY = null;
-        
+        temp_score = null;
       }
   
       cont_3.removeAllChildren();
@@ -319,6 +324,43 @@ function UI_player5(event){
   bitmap_UI.y =25;
   update = true;
 }
+function garbage(event){	//垃圾桶
+	var image_UI = event.target;
+  var bitmap_UI;
+
+  bitmap_UI = new createjs.Bitmap(image_UI);
+  bitmap_UI.name = "slave";
+  cont_UI.addChild(bitmap_UI);
+  bitmap_UI.scaleX = bitmap_UI.scaleY = bitmap_UI.scale = 0.5;
+  bitmap_UI.x =700;
+  bitmap_UI.y =570;
+  bitmap_UI.onClick = function(){
+    if(cont_temp_slave.children.length==0){
+      wtf--;
+      wtf_click=0;        
+      cont.removeChildAt(0);
+      cont_2.removeChildAt(HowManyCard);
+      cont_3.removeAllChildren();
+      /*if(wtf==2){
+        cont_2.removeChildAt(0);
+        HowManyCard=0;
+        wtf=1;
+        var image = new Image();
+        image.src = "assets/11c.png"
+        image.onload = handleImageLoad;
+      
+      }*/
+      update=true;
+      stage.update();
+    }
+    else {
+      console.log("There have some frames that you can put this card.");
+    }
+
+  }
+  createjs.Ticker.addListener(stage);
+    stage.update();
+}
   
   
 function check(event){
@@ -349,6 +391,15 @@ function check(event){
     TypeOfCard[HowManyCard-1] = ttt;//存使用者所抽到的卡片種類
     mapInfo[(yyy/150)-2+72][(xxx/150)-3+72]=n;
     slaveTF = false;
+    
+    if(temp_score != null) {
+      //console.log(temp_score + "****************123");
+        score_recordInfo[(yyy/150)-2+72][(xxx/150)-3+72][0] = temp_score + Mycolor*10;
+      }
+      temp_score = null;
+      if(now_y !=0) {
+        score_road((yyy/150)-2+72, (xxx/150)-3+72);
+      }
     
     createjs.Ticker.addListener(stage);
     stage.update();

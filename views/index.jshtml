@@ -15,7 +15,7 @@
       //var playerid = @locals.id ;//prompt('What is your id?');
       var slave_color, slave_image, arr, whosTurn;
 
-      var wtf = 1, wtf_click=0, wtf_slave = 1, ttt, cou=1, slaveTF=false, slave_XY, Mycolor, sla_valX, sla_valY;      
+      var wtf = 1, wtf_click=0, wtf_slave = 1, ttt, cou=1, slaveTF=false, slave_XY, Mycolor, sla_valX, sla_valY, temp_score;      
 
       var canvas, stage, cont, cont_2, cont_3, cont_UI, cont_temp_slave, degree, ttt;//"ttt"為該回合所抽取的卡片種類
       var mouseTarget;  // the display object currently under the mouse, or being dragged
@@ -427,7 +427,7 @@
   <body>
     <div class="container">
       <canvas id="canvas" width="950" height="650"></canvas>
-      <button onclick="out()">Out</button>
+     <!-- <button onclick="out()">Out</button>  -->
       <form id="target" action=".">
         <input type="text" id="input"></input>
         <input type="submit" id="sub" value="Send"></input>

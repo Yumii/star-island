@@ -71,6 +71,7 @@ function handleImageRed(event) {
         sla_valX = null;
         sla_valY = null;
         //cont_temp_slave.visible = false;
+        temp_score = null;
       }
       else {
         cont_slave.removeChildAt(cont_slave.children.length);
@@ -241,6 +242,9 @@ function handleImageSlave(event) {
       
       console.log(bitmap.name);
       console.log(slave_color + "*****");
+      
+      temp_score = slaveInfo[TypeOfCard[HowManyCard]][slave_j]; //儲存座標點
+      console.log("temp_score is " + temp_score );
       var image_s = new Image();
       image_s.src = "assets/slave"+ slave_color +".png";
       bitmap_s = new createjs.Bitmap(image_s);
