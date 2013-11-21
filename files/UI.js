@@ -378,8 +378,11 @@ function check(event){
 	  var ccc = cont_2.getChildAt(HowManyCard);
 	  xxx = ccc.x; yyy = ccc.y;
 	  ccc.name = "bmp_" + (HowManyCard+1);
-	  
-		socket.emit('OK', [ttt, degree-90, (yyy/150)-2+72, (xxx/150)-3+72, slave_color,  sla_valX, sla_valY]);
+	  if(temp_score != null) {
+      //console.log(temp_score + "****************123");
+        score_recordInfo[(yyy/150)-2+72][(xxx/150)-3+72][0] = temp_score + Mycolor*10;
+      }
+		socket.emit('OK', [ttt, degree-90, (yyy/150)-2+72, (xxx/150)-3+72, slave_color,  sla_valX, sla_valY,  score_recordInfo[(yyy/150)-2+72][(xxx/150)-3+72][0]]);
     //console.log(slave_color + "  UI");
 	  HowManyCard = wtf-1; //場上卡片數量
 	  cont.removeAllChildren();
@@ -392,14 +395,12 @@ function check(event){
     mapInfo[(yyy/150)-2+72][(xxx/150)-3+72]=n;
     slaveTF = false;
     
-    if(temp_score != null) {
-      //console.log(temp_score + "****************123");
-        score_recordInfo[(yyy/150)-2+72][(xxx/150)-3+72][0] = temp_score + Mycolor*10;
-      }
+    
       temp_score = null;
-      if(now_y !=0) {
+      //if(now_y !=0) {
+        roadInfo[(yyy/150)-2+72][(xxx/150)-3+7] = 2;
         score_road((yyy/150)-2+72, (xxx/150)-3+72);
-      }
+      //}
     
     createjs.Ticker.addListener(stage);
     stage.update();

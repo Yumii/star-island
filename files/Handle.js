@@ -231,7 +231,7 @@ function handleImageSlave(event) {
   bitmap.regX = bitmap.image.width/2|0;
   bitmap.regY = bitmap.image.height/2|0;
   bitmap.scaleX = bitmap.scaleY = bitmap.scale = 0.5;
-  bitmap.name = "slave_" + wtf_slave;
+  bitmap.name = "slave_" + slaveInfo[ttt][slave_j];
 
   update = true;
 
@@ -240,10 +240,10 @@ function handleImageSlave(event) {
       cont_temp_slave.addChild(target);
       var offset = {x:target.x-evt.stageX, y:target.y-evt.stageY};
       
-      console.log(bitmap.name);
+      console.log(bitmap.name.split("slave_")[1]);
       console.log(slave_color + "*****");
       
-      temp_score = slaveInfo[TypeOfCard[HowManyCard]][slave_j]; //儲存座標點
+      temp_score = parseInt(bitmap.name.split("slave_")[1]); //儲存座標點
       console.log("temp_score is " + temp_score );
       var image_s = new Image();
       image_s.src = "assets/slave"+ slave_color +".png";

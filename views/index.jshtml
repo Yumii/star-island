@@ -366,6 +366,7 @@
               if(whosTurn === slave_color) {
                 add();
               }
+              score_recordInfo[arr[2]][arr[3]][0] = arr[7];
             }
             if(arr[5] != null) {
               image = new Image();
